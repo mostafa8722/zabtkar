@@ -52,6 +52,7 @@ const mutations = {
   },
 
   UPDATE_SEARCHING(state, payload) {
+   // console.log("payload",payload);
     state.searching = payload;
   },
 
@@ -155,7 +156,11 @@ const actions = {
       });
   },
 
-  setSearchInput({ commit, dispatch }, searchInput) {
+  setSearchInput({ commit, dispatch }, search) {
+
+    const searchInput = search.name;
+    const from  = search.from;
+    const count =  search.count;
     if (!searchInput || searchInput === '') {
       dispatch('clearSearchedProducts');
       return;
@@ -166,6 +171,9 @@ const actions = {
     axios
       .post(`/Store/SearchProducts`, {
         name: searchInput,
+        from : from,
+        count:count,
+
       })
       .then((response) => {
         console.log(searchInput, response.data);
@@ -193,6 +201,12 @@ const actions = {
     commit('updateShowSearchedBrands', true);
     dispatch('clearSearchedProducts');
     dispatch('setBottomNavigationSelectedItem', 4, { root: true });
+  },
+
+  setSearching({ commit }, isSearching) {
+    console.log("ttt",isSearching)
+    commit('UPDATE_SEARCHING', isSearching);
+   
   },
 
   clearSearchedProducts({ commit }) {

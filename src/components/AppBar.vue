@@ -71,8 +71,9 @@
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
           dense
-          :value="search"
-          @input="onSearchInput"
+          v-model="search"
+          v-on:keyup.enter="handleEnter"
+          onkey
           append-icon="mdi-magnify"
           class="regular-font mt-7 rounded-pill"
           label="جستجو"
@@ -87,19 +88,19 @@
           v-on="on"
         ></v-text-field>
       </template>
-      <v-card width="100%" v-if="getSearchInput">
+      <v-card width="100%" v-if="search.length>2">
         <v-progress-linear
           v-if="isSearching"
           indeterminate
           class="mt-3"
         ></v-progress-linear>
 
-        <v-list>
+        <v-list v-if="getSearchedProductsSliced(5).length>0 && !isSearching">
           <p v-if="!isSearching" class="bold-font mx-6 my-3">محصولات</p>
           <v-list-item
             :disabled="isSearching"
             style="cursor: pointer"
-            v-for="(product, index) in getSearchedProductsSliced(3)"
+            v-for="(product, index) in getSearchedProductsSliced(5)"
             :key="index"
             @click="onProductSelect(product)"
           >
@@ -135,7 +136,7 @@
         </div>
         <div
           v-if="
-            !isSearching && getSearchedProducts.length == 0 && getSearchInput
+            !isSearching && getSearchedProducts.length == 0 && search.length>2
           "
           class="d-flex flex-row justify-center"
         >
@@ -144,7 +145,7 @@
 
         <v-divider v-if="!isSearching" />
 
-        <v-list v-if="!isSearching">
+        <v-list v-if="!isSearching && 2>3">
           <p class="bold-font mx-6 my-3">برند ها</p>
           <v-list-item
             :disabled="isSearching"
@@ -170,7 +171,7 @@
           </v-list-item>
         </v-list>
         <div
-          v-if="!isSearching && getSearchedBrands.length > 0"
+          v-if="!isSearching && getSearchedBrands.length > 0 && 2>3"
           class="d-flex flex-row justify-center"
         >
           <p
@@ -185,7 +186,7 @@
           </p>
         </div>
         <div
-          v-if="!isSearching && getSearchedBrands.length == 0 && getSearchInput"
+          v-if="!isSearching && getSearchedBrands.length == 0 && 2>3"
           class="d-flex flex-row justify-center"
         >
           <p class="bold-font">برند ای یافت نشد</p>
@@ -323,8 +324,10 @@ export default {
       "showSearchedProducts",
       "showSearchedBrands",
       "clearSearchedProducts",
-      "fetchProductsByBrandId"
+      "fetchProductsByBrandId",
+      "setSearching"
     ]),
+    
     ...mapActions("auth", ["logout"]),
     ...mapActions("credit", ["fetchCredit"]),
     ...mapActions("price", ["fetchMultiplier"]),
@@ -345,7 +348,12 @@ export default {
 
       this.debounce = setTimeout(() => {
         this.search = value;
-        this.setSearchInput(value);
+        const searchItem = {
+          name : value,
+          from : 0,
+          count:5
+        }
+        this.setSearchInput(searchItem);
       }, 500);
     },
 
@@ -371,6 +379,9 @@ export default {
       });
       this.fetchProductsByBrandId(brand.id);
     },
+    handleEnter(){
+      console.log("enter")
+    }
   },
   computed: {
     ...mapGetters("home", [
@@ -385,10 +396,14 @@ export default {
     ...mapGetters("cart", ["getCartItemsCount"]),
     ...mapGetters("credit", ["hasCredit", "getCredit", "creditLoading"]),
     ...mapGetters("price", ["getMultiplier", "priceLoading"]),
+
     getSearchedBrands() {
+
+     
       const brands = this.getAllBrands.filter(brand => {
-        return brand.name.includes(this.search)
+        return brand.name.trim().toLowerCase().includes(this.search.trim().toLowerCase())
       })
+   
       return brands.slice(0, 3)
     },
     getAllSearchedBrands() {
@@ -403,7 +418,16 @@ export default {
   },
   watch:{
     search(new_val,old_val){
-      this.onSearchInput(new_val);
+      console.log(new_val.length)
+      console.log(this.isSearching)
+
+      new_val.length>2 && !this.isSearching && (this.onSearchInput(new_val) ,  this.setSearching(true) );
+      if(new_val.length<=2){
+       
+        this.setSearching(false) ;
+        this.clearSearchedProducts();
+      } 
+      
     }
   }
 };
