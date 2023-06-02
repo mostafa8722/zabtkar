@@ -24,12 +24,8 @@ export default {
     ...mapActions('home', ['fetchGroups', 'fetchProductsByGroupId']),
     ...mapMutations('home', ['updateProducts']),
     onGroupItemSelect(item) {
-      this.$router.push({
-        name: 'Main',
-        query: {
-          group: item.id
-        }
-      })
+     
+      this.$router.push({ path: '/products', query: { group: item.id } })
       this.updateProducts([])
       this.fetchProductsByGroupId(item.id)
     }

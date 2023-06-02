@@ -225,6 +225,7 @@ export default {
     this.fetchCredit();
     this.fetchMultiplier();
     this.fetchAddresses();
+    this.updateCart();
   },
 };
 </script>

@@ -63,13 +63,13 @@ export default {
     ...mapGetters('home', ['getProducts', 'getProductsCount']),
   },
   created() {
-    window.addEventListener('scroll', this.onScroll);
+   // window.addEventListener('scroll', this.onScroll);
   },
   beforeMount() {
     this.fetchMultiplier()
   },
   destroyed() {
-    window.removeEventListener('scroll', this.onScroll);
+    //window.removeEventListener('scroll', this.onScroll);
   },
 };
 </script>

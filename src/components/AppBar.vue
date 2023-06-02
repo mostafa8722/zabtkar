@@ -73,7 +73,6 @@
           dense
           v-model="search"
           v-on:keyup.enter="handleEnter"
-          onkey
           append-icon="mdi-magnify"
           class="regular-font mt-7 rounded-pill"
           label="جستجو"
@@ -334,6 +333,12 @@ export default {
     setSelectedBottomNavigationItem(value) {
       this.$store.dispatch("setBottomNavigationSelectedItem", value);
       if (value == 4) {
+        this.$router.replace({
+        name: "Main",
+        query: {
+          
+        },
+      });
         this.$store.commit("home/updateShowProducts", false);
         this.$store.commit("home/updateShowSearchedBrands", false);
       }
@@ -380,7 +385,13 @@ export default {
       this.fetchProductsByBrandId(brand.id);
     },
     handleEnter(){
-      console.log("enter")
+      this.$router.replace({
+        name: "products",
+        query: {
+          search: this.search,
+        },
+      });
+      this.$router.push({ path: '/products', query: { search: this.search } })
     }
   },
   computed: {
@@ -418,8 +429,7 @@ export default {
   },
   watch:{
     search(new_val,old_val){
-      console.log(new_val.length)
-      console.log(this.isSearching)
+     
 
       new_val.length>2 && !this.isSearching && (this.onSearchInput(new_val) ,  this.setSearching(true) );
       if(new_val.length<=2){

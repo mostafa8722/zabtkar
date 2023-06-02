@@ -1,13 +1,8 @@
 <template>
   <div>
-     <v-dialog
-      v-model="openAdd"
-      v-if="$vuetify.breakpoint.width <= 600" 
-      
-    >
-    <AddProduct/>
-      </v-dialog>
     <HomeHeader v-if="$vuetify.breakpoint.width <= 600" />
+    <AppBarVue v-else />
+   
     <GroupList />
     <div v-if="isLoading || brandsLoading" class="mt-3 d-flex flex-row   ">
       <v-progress-circular
@@ -17,19 +12,18 @@
       ></v-progress-circular>
     </div>
    
-  
-
+ 
+   
     <v-row dense class="d-flex mr-3 ml-3 ">
      
       <v-col
+      v-if="$vuetify.breakpoint.width > 600"
         
-        
-      :cols="$vuetify.breakpoint.width > 600?9:12"
+        cols="3"
        
       >
         <v-responsive min-height="130px" class="fill-height">
-         
-          <BrandList />
+          <FilterSection />
         
         </v-responsive>
       </v-col>
@@ -37,6 +31,17 @@
       <v-col
         
         
+        :cols="$vuetify.breakpoint.width > 600?6:12"
+       
+      >
+        <v-responsive min-height="130px" class="fill-height">
+         
+        
+          <ProductList />
+        </v-responsive>
+      </v-col>
+
+      <v-col
       v-if="$vuetify.breakpoint.width > 600"
         
         cols="3"
@@ -49,10 +54,25 @@
       </v-col>
     </v-row>
    
-      <BottomNavigation/>
-  
-   
+      <v-dialog
+      v-model="openFilter"
+      v-if="$vuetify.breakpoint.width <= 600" 
+      
+    >
+    <FilterSection/>
+      </v-dialog>
+
+      <v-dialog
+      v-model="openAdd"
+      v-if="$vuetify.breakpoint.width <= 600" 
+      
+    >
+    <AddProduct/>
+      </v-dialog>
+      
+
     <div class="contact-us d-none d-sm-flex flex-column">
+     
       <a href="https://wa.me/989361513383" target="_blank" class="d-flex flex-row" style="gap: 1rem">
         <v-img src="@/assets/whatsapp.png" width="50px" height="50px" ></v-img>
         <p class="medium-font my-auto mx-auto">واتس آپ</p>
@@ -63,9 +83,19 @@
       </a>
     </div>
     <div class="d-flex mr-3 flex-column  d-sm-none contact-us__icon d-block" v-if="$vuetify.breakpoint.width <= 600"   >
-   
     <v-btn
-    @click="showFilter"
+    @click="showFilter('filter')"
+    size="small"
+    icon="mdi-filter"
+    class="mdi--filter"
+    >
+      <v-icon class="black-text"
+     
+                >mdi-filter</v-icon
+              >
+    </v-btn>
+    <v-btn
+    @click="showFilter('add')"
     class="mdi--link"
      size="small" icon="mdi-link-variant"
     >
@@ -80,9 +110,15 @@
     <a href="http://instagram.com/_u/paloot.onlineshop/" target="_blank" class=" d-block d-sm-none">
       <v-img src="@/assets/instagram.png" width="50px" height="50px"></v-img>
     </a>
-    
    </div>
+   
 
+   <v-pagination
+   class="z-ltr z-pagination"
+      v-model="pagination"
+      :length="4"
+      rounded="circle"
+    ></v-pagination>
   </div>
 </template>
 
@@ -93,27 +129,19 @@ import BrandList from '../components/home/brands/BrandList'
 import ProductList from '../components/home/products/ProductList'
 import FilterSection from '../components/features/Filters'
 import AddProduct from '../components/features/AddProduct'
+import AppBarVue from '../components/AppBar'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
-import BottomNavigation from '@/components/BottomNavigation.vue'
 
 export default {
-  name: 'HomeView',
+  name: 'products',
   components: {
     HomeHeader,
     GroupList,
     BrandList,
     ProductList,
     FilterSection,
-    AddProduct,
-    BottomNavigation
-},
-data(){
-return {
-  openAdd : false,
-}
-},
-
-
+    AddProduct,AppBarVue
+  },
   methods: {
     ...mapMutations('home', ['updateShowProducts']),
     ...mapActions('home', ['fetchProductsByBrandId', 'fetchProductsByGroupId']),
@@ -123,22 +151,40 @@ return {
           this.updateShowProducts(false)
         } 
       }
-    },
-    showFilter(){
-      this.openAdd = true
-       }
+    }
   },
   computed: {
-    ...mapGetters('home', ['isLoading', 'showProducts', 'brandsLoading'])
+    ...mapGetters('home', ['isLoading', 'showProducts', 'brandsLoading']),
+    
   },
-  mounted() {
-    if (this.$route.query.brand) {
-      this.fetchProductsByBrandId(this.$route.query.brand)
-    }
+  data() {
+      return {
+        openAdd: false,
+        openFilter: false,
+        pagination :1
+       
+     
+      }
+    },
+    methods:{
+      showFilter(type){
+        this.openAdd = false;
+        this.openFilter = false;
 
-    if (this.$route.query.group) {
-      this.fetchProductsByGroupId(this.$route.query.group)
+        type==="filter" ? this.openFilter = true : this.openAdd = true ;
+       
+      
+      
     }
+    },
+  mounted() {
+    // if (this.$route.query.brand) {
+    //   this.fetchProductsByBrandId(this.$route.query.brand)
+    // }
+
+    //if (this.$route.query.group) {
+      this.fetchProductsByGroupId(this.$route.query.group?this.$route.query.group:0);
+   // }
   },
   created() {
     window.addEventListener('popstate', this.handleBackButton)
@@ -149,7 +195,7 @@ return {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .contact-us {
   background-color: white;
   position: fixed;
@@ -173,9 +219,10 @@ return {
 
 .contact-us__icon {
   position: fixed;
-  left: -5px;
-  bottom: 80px;
+  left: 5px;
+  bottom: 50px;
   padding: 0;
+  align-items: center;
 }
 
 .contact-us__icon:hover {
@@ -194,11 +241,24 @@ img {
   left: 20px;
   top: 130px;
 }
-
 .mdi--link{
   background-color: blue;
   border-radius: 50%;
   padding:5px;
   margin-top:5px;
 }
+
+.mdi--filter{
+  background-color: #FD562E;
+  border-radius: 50%;
+  padding:5px;
+}
+.z-ltr{
+  direction: ltr !important;;
+
+}
+.mdi,.v-icon{
+    transform: rotate(180deg) !important;
+
+  }
 </style>

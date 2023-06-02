@@ -47,15 +47,15 @@ export default {
       this.fetchProductsByBrandId(brand.id)
     },
     onScroll() {
-      let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;
-      if (bottomOfWindow) {
-        if (this.end) return;
-        this.current++
-        if (this.indexEnd >= this.getBrandsCount) {
-          console.log('end')
-          this.end = true;
-        }
-      }
+      // let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;
+      // if (bottomOfWindow) {
+      //   if (this.end) return;
+      //   this.current++
+      //   if (this.indexEnd >= this.getBrandsCount) {
+      //     console.log('end')
+      //     this.end = true;
+      //   }
+      // }
     }
   },
 
@@ -76,13 +76,13 @@ export default {
   },
 
   created() {
-    window.addEventListener('scroll', this.onScroll);
+    //window.addEventListener('scroll', this.onScroll);
   },
   beforeMount() {
-    this.fetchBrands()
+    this.fetchBrands({from:0,count:10})
   },
   destroyed() {
-    window.removeEventListener('scroll', this.onScroll);
+   // window.removeEventListener('scroll', this.onScroll);
   },
 };
 </script>

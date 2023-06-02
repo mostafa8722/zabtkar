@@ -17,7 +17,7 @@
 import CartHeader from '../components/cart/CartHeader'
 import CartFooter from '../components/cart/CartFooter'
 import CartProductsList from '../components/cart/CartProductsList'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: 'Cart',
@@ -28,6 +28,20 @@ export default {
   },
   computed: {
     ...mapGetters('cart', ['isCartEmpty'])
+  },
+  methods:{
+    ...mapActions("cart", [
+      "updateCarts",
+  
+     
+    ]),
+  },
+  mounted(){
+   
+    this.updateCarts();
+   
+    
+   
   }
 }
 </script>

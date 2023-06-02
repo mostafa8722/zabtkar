@@ -5,7 +5,8 @@ import Main from '../views/Main'
 import Product from '../views/Product'
 import CartConfirm from '../components/cart/CartConfirm'
 import Register from '../views/Register'
-import Login from '../views/Login'
+import Login from '../views/Login';
+import Products from '../views/Products';
 
 Vue.use(VueRouter)
 
@@ -35,6 +36,12 @@ const routes = [
     path: '/product',
     name: 'Product',
     component: Product
+  },
+  ,
+  {
+    path: '/products',
+    name: 'Products',
+    component: Products
   }
 ]
 

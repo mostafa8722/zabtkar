@@ -5,8 +5,8 @@
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
           dense
-          :value="search"
-          @input="onSearchInput"
+          v-model="search"
+          v-on:keyup.enter="handleEnter"
           append-icon="mdi-magnify"
           class="regular-font mt-7 rounded-pill"
           label="جستجو"
@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     ...mapActions('product', ['setProduct']),
-    ...mapActions('home', ['setSearchInput', 'showSearchedProducts', 'showSearchedBrands', 'clearSearchedProducts', 'fetchProductsByBrandId']),
+    ...mapActions('home', [ "setSearching",'setSearchInput', 'showSearchedProducts', 'showSearchedBrands', 'clearSearchedProducts', 'fetchProductsByBrandId']),
     onProductSelect(product) {
       this.setProduct(product)
       this.$router.push({
@@ -134,6 +134,15 @@ export default {
         this.setSearchInput(value);
       }, 500)
     },
+    handleEnter(){
+      this.$router.replace({
+        name: "products",
+        query: {
+          search: this.search,
+        },
+      });
+      this.$router.push({ path: '/products', query: { search: this.search } })
+    }
 
   },
   computed: {
@@ -148,6 +157,19 @@ export default {
       return this.getAllBrands.filter(brand => {
         return brand.name.includes(this.search)
       })
+    }
+  },
+  watch:{
+    search(new_val,old_val){
+   
+
+      new_val.length>2 && !this.isSearching && (this.onSearchInput(new_val) ,  this.setSearching(true) );
+      if(new_val.length<=2){
+       
+        this.setSearching(false) ;
+        this.clearSearchedProducts();
+      } 
+      
     }
   }
 };

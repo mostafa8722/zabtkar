@@ -79,11 +79,13 @@ const actions = {
       });
   },
 
-  fetchBrands({ commit }) {
+  fetchBrands({ commit },{from,count}) {
+  
+    
     return new Promise((resolve, reject) => {
       commit('updateBrandsLoading', true);
       axios
-        .get('/Store/Brands')
+        .get(`/Store/Brands?from=${from}&count=${count}`)
         .then((response) => {
           commit('updateBrands', response.data.data);
         })
@@ -98,7 +100,9 @@ const actions = {
   },
 
   fetchProductsByGroupId({ commit, getters }, group_id) {
-    if (getters.isLoading) return;
+    
+    //if (getters.isLoading) return;
+    
     commit('updateLoading', true);
     commit('updateShowProducts', true);
     axios
@@ -119,6 +123,7 @@ const actions = {
   },
 
   fetchProductsByBrandId({ commit }, brand_id) {
+    alert()
     commit('updateLoading', true);
     commit('updateShowProducts', true);
     commit('updateProducts', []);

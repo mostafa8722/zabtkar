@@ -25,6 +25,7 @@ const mutations = {
       variant: payload.variant,
       count: 1
     });
+   
   },
 
   UPDATE_VARIANT(state, { product, oldVariant, newVariant }) {
@@ -34,6 +35,13 @@ const mutations = {
     if (cartItem) {
       cartItem.variant = newVariant;
     }
+  },
+
+  UPDATE_CART(state) {
+   let items_exist =  state.items.filter((item) =>item.variant.exists===true);
+    state.items = items_exist; 
+  
+    
   },
 
   INCREMENT_ITEM_COUNT(state, payload) {
@@ -59,7 +67,8 @@ const mutations = {
     let index = state.items.findIndex(item => {
       return item.product.id == payload.product.id && item.variant.id == payload.variant.id
     })
-    if (index > -1) {
+   
+    if (index > -1 || payload.variant.exists===false) {
       state.items.splice(index, 1);
     }
   },
@@ -84,8 +93,9 @@ const mutations = {
 
 const actions = {
   addToCart({commit, getters}, payload) {
-    let item = getters.getCartItem(payload.product.id, payload.variant.id);
-    if (!item) {
+   
+    let item = getters.getCartItem(payload.product.id, payload.variant.id) && payload.variant.exists ;
+    if (!item ) {
       commit('ADD_TO_CART', payload)
     }
   },
@@ -93,6 +103,12 @@ const actions = {
   updateVariant({commit}, payload) {
     if (payload.oldVariant.id == payload.newVariant.id) return;
     commit('UPDATE_VARIANT', payload)
+  },
+
+  updateCarts({commit, getters}, payload) {
+  
+ 
+    commit('UPDATE_CART')
   },
 
   incrementItemCount({commit}, payload) {
@@ -112,6 +128,7 @@ const actions = {
   },
 
   async refreshCart({rootState, getters}) {
+    alert()
     if (!rootState.auth.token) {
       return false
     }
