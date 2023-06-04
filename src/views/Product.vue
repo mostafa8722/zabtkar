@@ -20,7 +20,7 @@
           <v-icon color="black">mdi-close</v-icon>
         </v-btn>
       </div>
-      <v-container>
+      <v-container class="product-container">
         <v-row>
           <v-col cols="6">
             <v-sheet elevation="2" class="pa-6 rounded-lg">
@@ -76,14 +76,23 @@
                 class="regular-font mt-3"
                 outlined
                 return-object
+                @click="updateVariants"
                 :disabled="getVariants.length == 0"
               >
+              
+       
                 <template #item="{ item }">
-                  <p v-if="item.exists">{{ item.attributeValue }}</p>
-                  <div v-else class="d-flex flex-row" style="gap: 0.5rem">
-                    <span>{{ item.attributeValue }}</span>
-                    <span class="regular-font">(تمام شده است)</span>
-                  </div>
+                  <div  v-if="sizeLoading" class="d-flex flex-row justify-center my-3">
+                  <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                </div>
+                  <div v-else>
+             
+            <p v-if="item.exists">{{ item.attributeValue }}</p>
+            <div v-else class="d-flex flex-row" style="gap: 0.5rem">
+              <span>{{ item.attributeValue }}</span>
+              <span class="regular-font">(تمام شده است)</span>
+            </div>
+            </div>
                 </template>
               </v-select>
 
@@ -190,15 +199,24 @@
           persistent-placeholder
           class="regular-font mt-3"
           outlined
+          @click="updateVariants"
           return-object
           :disabled="getVariants.length == 0"
         >
+        
           <template #item="{ item }">
+            <div  v-if="sizeLoading" class="d-flex flex-row justify-center my-3">
+                  <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                </div>
+                  <div v-else>
+             
             <p v-if="item.exists">{{ item.attributeValue }}</p>
             <div v-else class="d-flex flex-row" style="gap: 0.5rem">
               <span>{{ item.attributeValue }}</span>
               <span class="regular-font">(تمام شده است)</span>
             </div>
+            </div>
+           
           </template>
         </v-select>
 
@@ -301,7 +319,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("product", ["fetchProduct"]),
+    ...mapActions("product", ["fetchProduct",'refreshVariants',"setSizeLoading"]),
     ...mapActions(["setBottomNavigationSelectedItem"]),
     ...mapActions("price", ["fetchMultiplier"]),
     ...mapActions("cart", [
@@ -363,6 +381,11 @@ export default {
         name: "Main",
       });
     },
+    updateVariants(){
+   
+     
+      this.refreshVariants(this.$route.query.id)
+    },
 
     onBookmarkClick() {
       if (this.isBookmarked(this.getProduct)) {
@@ -384,7 +407,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("product", ["getProduct", "productLoading"]),
+    ...mapGetters("product", ["getProduct", "productLoading","sizeLoading","updatedVariants"]),
     ...mapGetters("price", ["getMultiplier"]),
     ...mapGetters("cart", ["getCartItem"]),
     ...mapGetters("bookmark", ["isBookmarked"]),
@@ -420,7 +443,8 @@ export default {
         : null;
     },
     getVariants() {
-      const variants = this.getProduct ? this.getProduct.variants : [];
+      const variants = this.updatedVariants.length? this.updatedVariants:this.getProduct ? this.getProduct.variants : [];
+     
       return variants.map((variant) => {
         return {
           ...variant,
@@ -447,16 +471,19 @@ export default {
     },
   },
   mounted() {
+   
     this.fetchMultiplier();
     if (this.$route.query.id) {
       this.fetchProduct({
         id: this.$route.query.id,
       });
+      this.refreshVariants(this.$route.query.id)
     }
     // if (this.getProduct && this.getProduct.variants.length > 0) {
     //   this.variant = this.getProduct.variants[0];
     // }
   },
+ 
 };
 </script>
 

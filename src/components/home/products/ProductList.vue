@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-3" id="container" :class="($vuetify.breakpoint.lgAndUp) ? 'trimmed-container' : ''">
+  <v-container class="mt-3" id="container" :class="($vuetify.breakpoint.lgAndUp) ? '' : ''">
     <v-row dense>
       <v-col
         class="d-flex"
@@ -8,8 +8,8 @@
         cols="6"
         xs="4"
         sm="4"
-        md="3"
-        lg="3"
+        md="4"
+        lg="4"
         xl="2"
       >
         <v-responsive min-height="550" class="fill-height" color="transparent">

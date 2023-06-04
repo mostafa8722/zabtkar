@@ -23,7 +23,20 @@ const mutations = {
     state.items.push({
       product: payload.product,
       variant: payload.variant,
-      count: 1
+      count: 1,
+      external:false
+    });
+   
+  },
+
+  ADD_TO_CART_External(state, payload) {
+    state.items.push({
+      price: payload.price,
+      link: payload.link,
+      color: payload.color,
+      variant: payload.variant,
+      count: 1,
+      external:true
     });
    
   },
@@ -38,7 +51,7 @@ const mutations = {
   },
 
   UPDATE_CART(state) {
-   let items_exist =  state.items.filter((item) =>item.variant.exists===true);
+   let items_exist =  state.items.filter((item) => item.variant.exists===true && !item.external);
     state.items = items_exist; 
   
     
@@ -99,6 +112,11 @@ const actions = {
       commit('ADD_TO_CART', payload)
     }
   },
+
+  addToCartExternal({commit, getters}, payload) {
+    commit('ADD_TO_CART_External', payload)
+  },
+
 
   updateVariant({commit}, payload) {
     if (payload.oldVariant.id == payload.newVariant.id) return;
@@ -206,7 +224,7 @@ const getters = {
   },
 
   getCartItemsTotalPrice: (state) => {
-    return state.items.reduce((acc, item) => acc + (item.variant.sellingPrice * item.count), 0);
+    return state.items.reduce((acc, item) => acc + item.external?(item.count*item*price):(item.variant.sellingPrice * item.count), 0);
   },
 
   getItemProducts: (state) => {

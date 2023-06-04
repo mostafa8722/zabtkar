@@ -1,7 +1,7 @@
 <template>
   <div>
-    <HomeHeader v-if="$vuetify.breakpoint.width <= 600" />
-    <AppBarVue v-else />
+ 
+    <AppBarVue  />
    
     <GroupList />
     <div v-if="isLoading || brandsLoading" class="mt-3 d-flex flex-row   ">
@@ -22,7 +22,7 @@
         cols="3"
        
       >
-        <v-responsive min-height="130px" class="fill-height">
+        <v-responsive class="p-sticky-0">
           <FilterSection />
         
         </v-responsive>
@@ -47,15 +47,23 @@
         cols="3"
        
       >
-        <v-responsive min-height="130px" class="fill-height">
+        <v-responsive class="p-sticky-0" >
           <AddProduct />
         
         </v-responsive>
       </v-col>
     </v-row>
    
+    <div v-if="isLoading" class="mt-3 d-flex flex-row   ">
+      <v-progress-circular
+        indeterminate
+        color="primary"
+        class="mx-auto"
+      ></v-progress-circular>
+    </div>
       <v-dialog
       v-model="openFilter"
+      overlay-opacity="0.9"
       v-if="$vuetify.breakpoint.width <= 600" 
       
     >
@@ -63,6 +71,7 @@
       </v-dialog>
 
       <v-dialog
+      overlay-opacity="0.9"
       v-model="openAdd"
       v-if="$vuetify.breakpoint.width <= 600" 
       
@@ -91,7 +100,9 @@
     >
       <v-icon class="black-text"
      
-                >mdi-filter</v-icon
+                >
+                mdi-filter-outline
+                </v-icon
               >
     </v-btn>
     <v-btn
@@ -108,17 +119,12 @@
       <v-img src="@/assets/whatsapp.png" width="50px" height="50px"></v-img>
     </a>
     <a href="http://instagram.com/_u/paloot.onlineshop/" target="_blank" class=" d-block d-sm-none">
-      <v-img src="@/assets/instagram.png" width="50px" height="50px"></v-img>
+      <v-img src="@/assets/instagram.png" class="br-50" width="35px" height="35px"></v-img>
     </a>
    </div>
    
 
-   <v-pagination
-   class="z-ltr z-pagination"
-      v-model="pagination"
-      :length="4"
-      rounded="circle"
-    ></v-pagination>
+  
   </div>
 </template>
 
@@ -151,23 +157,8 @@ export default {
           this.updateShowProducts(false)
         } 
       }
-    }
-  },
-  computed: {
-    ...mapGetters('home', ['isLoading', 'showProducts', 'brandsLoading']),
-    
-  },
-  data() {
-      return {
-        openAdd: false,
-        openFilter: false,
-        pagination :1
-       
-     
-      }
     },
-    methods:{
-      showFilter(type){
+    showFilter(type){
         this.openAdd = false;
         this.openFilter = false;
 
@@ -175,23 +166,74 @@ export default {
        
       
       
-    }
     },
-  mounted() {
-    // if (this.$route.query.brand) {
-    //   this.fetchProductsByBrandId(this.$route.query.brand)
-    // }
+    onScroll() {
 
-    //if (this.$route.query.group) {
-      this.fetchProductsByGroupId(this.$route.query.group?this.$route.query.group:0);
-   // }
+
+      if(!this.isLoading){
+      let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;
+      if (bottomOfWindow) {
+        this.from += this.count ;
+         
+      const data = {
+        group :  this.$route.query.group?this.$route.query.group:1,
+        from:this.from,
+        count : this.count
+      }
+      this.fetchProductsByGroupId(data);
+      }
+    }
+    }
+  },
+  computed: {
+    ...mapGetters('home', ['isLoading', 'showProducts', 'brandsLoading',"searchQuery"]),
+    
+  },
+  data() {
+      return {
+        openAdd: false,
+        openFilter: false,
+        pagination :1,
+        from : 0,
+        count : 15,
+       
+     
+      }
+    },
+  
+    mounted() {
+  
+      const data = {
+        group :  this.$route.query.group?this.$route.query.group:1,
+        from:this.from,
+        count : this.count
+      }
+      this.fetchProductsByGroupId(data);
+
+
+    
   },
   created() {
-    window.addEventListener('popstate', this.handleBackButton)
+    window.addEventListener('scroll', this.onScroll);
+    window.addEventListener('popstate', this.handleBackButton);
+   
   },
   destroyed() {
     window.removeEventListener('popstate', this.handleBackButton)
   },
+  watch:{
+    searchQuery(new_val,old_val){
+   
+      this.from = 0;
+      this.count = 15;
+      const data = {
+        group :  this.$route.query.group?this.$route.query.group:1,
+        from:this.from,
+        count : this.count
+      }
+      this.fetchProductsByGroupId(data);
+    }
+  }
 }
 </script>
 
@@ -244,14 +286,19 @@ img {
 .mdi--link{
   background-color: blue;
   border-radius: 50%;
-  padding:5px;
+ 
   margin-top:5px;
+  width: 35px;
+  height: 35px;
 }
 
 .mdi--filter{
   background-color: #FD562E;
   border-radius: 50%;
-  padding:5px;
+ 
+  width: 35px;
+  height: 35px;
+  transform: rotate(180deg);
 }
 .z-ltr{
   direction: ltr !important;;
@@ -260,5 +307,12 @@ img {
 .mdi,.v-icon{
     transform: rotate(180deg) !important;
 
+  }
+  .p-sticky-0{
+    position: sticky;
+    top:0px;
+  }
+  .br-50{
+    border-radius: 50%;
   }
 </style>

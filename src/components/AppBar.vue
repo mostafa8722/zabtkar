@@ -1,7 +1,7 @@
 <template>
-  <v-app-bar elevation="2" height="60">
-    <div class="d-flex flex-row align-center">
-      <v-tooltip bottom color="secondary">
+  <v-app-bar  elevation="2" height="60">
+    <div   class="d-flex flex-row align-center">
+      <v-tooltip  v-if="$vuetify.breakpoint.width > 600"  bottom color="secondary">
         <template v-slot:activator="{ on, attrs }">
           <!-- <v-btn icon v-bind="attrs" v-on="on" @click="setSelectedBottomNavigationItem(4)">
             <v-icon :color="getBottomNavigationSelectedItem == 4 ? 'primary' : 'secondary'">mdi-home</v-icon>
@@ -21,7 +21,7 @@
         <span class="regular-font">خانه</span>
       </v-tooltip>
 
-      <v-tooltip bottom color="secondary">
+      <v-tooltip v-if="$vuetify.breakpoint.width > 600"  bottom color="secondary">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             icon
@@ -47,8 +47,8 @@
         <span class="regular-font">سبد خرید</span>
       </v-tooltip>
 
-      <v-tooltip bottom color="secondary">
-        <template v-slot:activator="{ on, attrs }">
+      <v-tooltip v-if="$vuetify.breakpoint.width > 600" bottom color="secondary">
+        <template v-if="$vuetify.breakpoint.width > 600"  v-slot:activator="{ on, attrs }">
           <v-btn
             icon
             v-bind="attrs"
@@ -67,12 +67,15 @@
       </v-tooltip>
     </div>
 
-    <v-menu offset-y left nudge-top="25px" max-width="400px">
+    <v-menu  nudge-top="25px"  >
       <template v-slot:activator="{ on, attrs }">
+       
         <v-text-field
           dense
+        
           v-model="search"
           v-on:keyup.enter="handleEnter"
+          v-on:keydown="onSearchInput"
           append-icon="mdi-magnify"
           class="regular-font mt-7 rounded-pill"
           label="جستجو"
@@ -81,20 +84,20 @@
           outlined
           clearable
           full-width
-          style="max-width: 400px; min-width: 200px"
+          :style="`max-width:${$vuetify.breakpoint.width<=600?'100%':'400px'};
+          width:${$vuetify.breakpoint.width<=600?'100%':'auto'}
+          ` "
           :disabled="priceLoading || creditLoading"
           v-bind="attrs"
           v-on="on"
         ></v-text-field>
       </template>
-      <v-card width="100%" v-if="search.length>2">
-        <v-progress-linear
-          v-if="isSearching"
-          indeterminate
-          class="mt-3"
-        ></v-progress-linear>
+     
+     
+      <v-card width="100%" v-if="!isSearching && search && search.length>2">
+       
 
-        <v-list v-if="getSearchedProductsSliced(5).length>0 && !isSearching">
+        <v-list v-if=" !isSearching && search && search.length>2">
           <p v-if="!isSearching" class="bold-font mx-6 my-3">محصولات</p>
           <v-list-item
             :disabled="isSearching"
@@ -126,7 +129,7 @@
             class="bold-font"
             style="color: var(--primary-color); cursor: pointer"
             @click="
-              showSearchedProducts();
+              showMoreSearchedProducts();
               search = '';
             "
           >
@@ -191,12 +194,18 @@
           <p class="bold-font">برند ای یافت نشد</p>
         </div>
       </v-card>
+      <v-progress-linear
+          v-if="isSearching "
+          indeterminate
+          class="mt-3"
+        ></v-progress-linear>
     </v-menu>
 
-    <v-spacer></v-spacer>
+    <v-spacer  ></v-spacer>
 
-    <div class="d-flex flex-row">
-      <div v-if="isLoggedIn" class="d-flex flex-row" style="gap: 0.5rem">
+    <div v-if="$vuetify.breakpoint.width > 600"></div>
+    <div  class="d-flex flex-row">
+      <div  v-if="isLoggedIn && $vuetify.breakpoint.width > 600 " class="d-flex flex-row" style="gap: 0.5rem">
         <v-btn :loading="creditLoading" class="my-auto" icon outlined small>
           <v-icon>mdi-wallet</v-icon>
         </v-btn>
@@ -214,7 +223,7 @@
         </p>
       </div>
 
-      <div class="d-flex flex-row mx-3" style="gap: 0.5rem">
+      <div  v-if="$vuetify.breakpoint.width > 600" class="d-flex flex-row mx-3" style="gap: 0.5rem">
         <v-btn
           :loading="priceLoading"
           class="my-auto"
@@ -236,7 +245,7 @@
         </p>
       </div>
 
-      <v-menu offset-y transition="slide-y-transition">
+      <v-menu v-if="$vuetify.breakpoint.width > 600" offset-y transition="slide-y-transition">
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
             <v-icon>mdi-account</v-icon>
@@ -324,7 +333,8 @@ export default {
       "showSearchedBrands",
       "clearSearchedProducts",
       "fetchProductsByBrandId",
-      "setSearching"
+      "setSearching",
+      "setSearchQuery"
     ]),
     
     ...mapActions("auth", ["logout"]),
@@ -347,19 +357,33 @@ export default {
     onProfileMenuItemSelect(index) {
       this.$store.commit("profile/updateSelectedMenuItem", index);
     },
+    showMoreSearchedProducts(){
+      this.setSearchQuery(this.search);
+      this.$router.push({
+        path: '/products',
+        query: {
+          search: this.search
+        }
+      })
+    },
 
     onSearchInput(value) {
       clearTimeout(this.debounce);
 
+      
       this.debounce = setTimeout(() => {
-        this.search = value;
+
+
         const searchItem = {
-          name : value,
+          name : this.search,
           from : 0,
           count:5
         }
-        this.setSearchInput(searchItem);
-      }, 500);
+    
+        this.search.length>0 && (
+       this.setSearching(true) , this.setSearchInput(searchItem));
+
+      }, 1000);
     },
 
     onProductSelect(product) {
@@ -430,13 +454,19 @@ export default {
   watch:{
     search(new_val,old_val){
      
+      console.log("ttt00",this.search)
 
-      new_val.length>2 && !this.isSearching && (this.onSearchInput(new_val) ,  this.setSearching(true) );
-      if(new_val.length<=2){
+       if(new_val.length<=2){
        
         this.setSearching(false) ;
         this.clearSearchedProducts();
       } 
+      // (this.onSearchInput(new_val) ,  this.setSearching(true) );
+      // if(new_val.length<=2){
+       
+      //   this.setSearching(false) ;
+      //   this.clearSearchedProducts();
+      // } 
       
     }
   }

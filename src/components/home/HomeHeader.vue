@@ -4,6 +4,7 @@
     <v-menu offset-y nudge-top="25px">
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
+        
           dense
           v-model="search"
           v-on:keyup.enter="handleEnter"

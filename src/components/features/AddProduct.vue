@@ -1,5 +1,28 @@
 <template>
+   
       <v-card   title="This is a title" class="mx-auto d-flex flex-column box-filter mt-5" >
+
+        <v-snackbar
+      v-model="snackbar"
+      :timeout="snackbarTimeout"
+      class="bold-font pa-3"
+      dir="rtl"
+      top
+    >
+      {{ snackbarMessage }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          v-if="snackbarButton"
+          class="mx-3"
+          color="primary"
+          @click="viewCart"
+          v-bind="attrs"
+        >
+          برو به سبد
+        </v-btn>
+      </template>
+    </v-snackbar>
 
         <h3 class="medium-font font-15 justify-center d-flex mt-3"> افزودن کالا به سبد خرید از طریق لینک</h3>
         <div class="filter-header-box mt-3 d-flex mr-2 ml-2">
@@ -27,17 +50,19 @@
           placeholder="  لینک کالا "
           background-color="white"
           outlined
-          type="email"
+          v-model="link"
+          type="text"
             ></v-text-field>
 
             <v-text-field
           dense
+          v-model="variant"
           class="regular-font mt-3 "
           label=" سایز"
           placeholder="   سایز "
           background-color="white"
           outlined
-          type="email"
+          type="text"
             ></v-text-field>
 
             <v-text-field
@@ -47,7 +72,8 @@
           placeholder="   رنگ "
           background-color="white"
           outlined
-          type="email"
+          v-model="color"
+          type="text"
             ></v-text-field>
 
             <v-text-field
@@ -57,12 +83,15 @@
           placeholder="   قیمت (به لیر) "
           background-color="white"
           outlined
-          type="email"
+          v-model="price"
+          type="text"
             ></v-text-field>
 
         </div>
 
-        <v-btn class=" regular-font mt-auto mt-2  mb-4 mr-5 ml-5 white--text"   height="50" variant='text' color="#FD562E" >افزودن به سبد</v-btn>
+        <v-btn 
+        @click.prevent = "onAddToCartClick"
+        class=" regular-font mt-auto mt-2  mb-4 mr-5 ml-5 white--text add-product"   height="50" variant='text' color="#FD562E" >افزودن به سبد</v-btn>
     
         
       </v-card>
@@ -91,15 +120,59 @@
         isActive: false,
         showOriginalName: true,
         showLirPrice: true,
+        price :'',
+        color:'',
+        link :"",
+        variant:'',
+        snackbar: false,
+      snackbarMessage: "",
+      snackbarButton: false,
+      snackbarTimeout: 2000,
       }
     },
     methods: {
       ...mapActions("price", ["convertLirToToman"]),
+      ...mapActions(["setBottomNavigationSelectedItem"]),
       ...mapActions('bookmark', ['addBookmark', 'deleteBookmark']),
+      ...mapActions("cart", [
+      "addToCartExternal",
+      "incrementItemCount",
+      "decrementItemCount",
+      "removeItemFromCart",
+    ]),
       onProductItemClick() {
         this.$emit('select')
       },
-  
+      viewCart() {
+      this.setBottomNavigationSelectedItem(3);
+      this.$router.replace({
+        name: "Main",
+      });
+    },
+      onAddToCartClick() {
+      if (!this.variant  || !this.color || !this.price ||isNaN(this.price) ) {
+
+        !this.price  && isNaN(this.price) &&  (this.snackbarMessage = "  قیمت  وارد شده  صحیح  نمی باشد");
+        !this.size &&  (this.snackbarMessage = "  سایز نمی تواند خالی باشد");
+        !this.color &&  (this.snackbarMessage = "  رنگ نمی تواند خالی باشد");
+        !this.link &&  (this.snackbarMessage = "  لینک نمی تواند خالی باشد");
+        this.snackbar = true;
+        this.snackbarTimeout = 3000;
+        this.snackbarButton = false;
+        return;
+      }
+
+      this.addToCartExternal({
+        price: this.price,
+        color : this.color,
+        variant: this.variant,
+        link : this.link
+      });
+      this.snackbar = true;
+      this.snackbarMessage = "محصول به سبد خرید اضافه شد";
+      this.snackbarTimeout = 15000;
+      this.snackbarButton = true;
+    },
   
     },
     computed: {
@@ -124,6 +197,10 @@
 
 .box-filter{
   background-color: #878787;
+  border-radius: 20px;
+
+  margin-left: 40px!important;
+
 }
   .filter-header-box {
     background-color: #FFE5C6;
@@ -149,6 +226,9 @@
   }
   .font-15{
     font-size: 15px;
+  }
+  .add-product{
+    border-radius: 15px;
   }
  
   </style>

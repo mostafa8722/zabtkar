@@ -3,11 +3,11 @@
      <v-dialog
       v-model="openAdd"
       v-if="$vuetify.breakpoint.width <= 600" 
-      
+      overlay-opacity="0.9" 
     >
     <AddProduct/>
       </v-dialog>
-    <HomeHeader v-if="$vuetify.breakpoint.width <= 600" />
+    
     <GroupList />
     <div v-if="isLoading || brandsLoading" class="mt-3 d-flex flex-row   ">
       <v-progress-circular
@@ -24,7 +24,20 @@
       <v-col
         
         
-      :cols="$vuetify.breakpoint.width > 600?9:12"
+        v-if="$vuetify.breakpoint.width > 600"
+          
+          cols="3"
+         
+        >
+          <v-responsive min-height="130px" class="fill-height">
+            
+          
+          </v-responsive>
+        </v-col>
+      <v-col
+        
+        
+      :cols="$vuetify.breakpoint.width > 600?6:12"
        
       >
         <v-responsive min-height="130px" class="fill-height">
@@ -42,7 +55,7 @@
         cols="3"
        
       >
-        <v-responsive min-height="130px" class="fill-height">
+        <v-responsive  class="p-sticky-0">
           <AddProduct />
         
         </v-responsive>
@@ -78,7 +91,7 @@
       <v-img src="@/assets/whatsapp.png" width="50px" height="50px"></v-img>
     </a>
     <a href="http://instagram.com/_u/paloot.onlineshop/" target="_blank" class=" d-block d-sm-none">
-      <v-img src="@/assets/instagram.png" width="50px" height="50px"></v-img>
+      <v-img src="@/assets/instagram.png" class="br-50" width="35px" height="35px"></v-img>
     </a>
     
    </div>
@@ -200,5 +213,14 @@ img {
   border-radius: 50%;
   padding:5px;
   margin-top:5px;
+  width: 35px;
+  height: 35px;
 }
+.p-sticky-0{
+    position: sticky;
+    top:0px;
+  }
+  .br-50{
+    border-radius: 50%;
+  }
 </style>

@@ -12,12 +12,17 @@ const state = () => ({
   searchedProducts: [],
   showSearchedBrands: false,
   searchedBrands: [],
+  searchQuery : "",
 });
 
 const mutations = {
   updateLoading(state, payload) {
     state.loading = payload;
   },
+  UpdateSearchQuery(state, payload) {
+    state.searchQuery = payload;
+  },
+
 
   updateBrandsLoading(state, payload) {
     state.brandsLoading = payload;
@@ -99,19 +104,30 @@ const actions = {
     });
   },
 
-  fetchProductsByGroupId({ commit, getters }, group_id) {
-    
+  setSearchQuery({ commit, getters }, search ){
+   
+    commit('UpdateSearchQuery', search);
+
+  },
+  fetchProductsByGroupId({ commit, getters }, data) {
+
     //if (getters.isLoading) return;
+
+    const group_id = data.group;
+    const from = data.from;
+    const count = data.count;
     
     commit('updateLoading', true);
     commit('updateShowProducts', true);
+   
     axios
       .post(`/Store/Products`, {
         groupId: group_id,
-        from: getters.getProducts.length,
-        count: 15
+        from: from,
+        count: count
       })
       .then((response) => {
+ 
         commit('addToProducts', response.data.data);
       })
       .catch(() => {
@@ -123,13 +139,16 @@ const actions = {
   },
 
   fetchProductsByBrandId({ commit }, brand_id) {
-    alert()
+    alert(2)
     commit('updateLoading', true);
     commit('updateShowProducts', true);
     commit('updateProducts', []);
     axios
       .post(`/Store/SearchProducts`, {
         brand: brand_id,
+        name :"",
+        from : 0,
+        count:7,
       })
       .then((response) => {
         commit('updateProducts', response.data.data);
@@ -166,13 +185,17 @@ const actions = {
     const searchInput = search.name;
     const from  = search.from;
     const count =  search.count;
+    console.log("ttttta",searchInput)
     if (!searchInput || searchInput === '') {
       dispatch('clearSearchedProducts');
       return;
     }
+    console.log("tttttb",searchInput)
     commit('UPDATE_SEARCH', searchInput);
     if (!searchInput) return;
     commit('UPDATE_SEARCHING', true);
+
+    console.log("ttttt",searchInput)
     axios
       .post(`/Store/SearchProducts`, {
         name: searchInput,
@@ -260,6 +283,7 @@ const getters = {
   brandsLoading: (state) => state.brandsLoading,
   getSearchedBrands: (state) => state.searchedBrands,
   getShowSearchedBrands: (state) => state.showSearchedBrands,
+  searchQuery: (state) => state.searchQuery,
 };
 
 export default {

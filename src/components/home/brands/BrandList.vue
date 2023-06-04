@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-3" id="container" :class="($vuetify.breakpoint.lgAndUp) ? 'trimmed-container' : ''">
+  <v-container class="mt-3" id="container" :class="($vuetify.breakpoint.lgAndUp) ? '' : ''">
     <v-row dense class="d-flex justify-center align-center">
       <v-col
         v-for="(brand, index) in getList"
@@ -79,7 +79,7 @@ export default {
     //window.addEventListener('scroll', this.onScroll);
   },
   beforeMount() {
-    this.fetchBrands({from:0,count:10})
+    this.fetchBrands({from:0,count:4})
   },
   destroyed() {
    // window.removeEventListener('scroll', this.onScroll);

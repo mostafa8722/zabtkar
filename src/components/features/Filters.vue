@@ -86,7 +86,8 @@
 
 .box-filter{
   background-color: #878787;
-  z-index: 1000;
+
+
 }
   .filter-header-box {
     background-color: #FFE5C6;

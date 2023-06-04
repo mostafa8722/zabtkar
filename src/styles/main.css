@@ -252,3 +252,31 @@
   transform: rotate(180deg) !important;
 
 }
+.product-container{
+  max-width: 800px;
+}
+.v-menu__content{
+  right: 170px;
+  top: 55px !important;;
+  max-width: 400px;
+  min-width: 200px;
+}
+
+@media only screen and (max-width: 900px) {
+  .v-menu__content{
+  
+    max-width: 200px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .v-menu__content{
+    width: 90%;
+    right: 10px;
+    top: 55px !important;;
+    max-width: 100%;
+  }
+}
+
+
+

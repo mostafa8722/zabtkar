@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AppBar v-if="$vuetify.breakpoint.width > 600"/>
+    <AppBar />
     <div>
       <Home v-show="getBottomNavigationSelectedItem == 4"/>
       <Cart v-show="getBottomNavigationSelectedItem == 3"/>
