@@ -62,6 +62,7 @@
      
       handleFilters(){
 
+
         const data = {
        
        from:0,
@@ -126,7 +127,8 @@ console.log("getProducts3",uniqueAuthors)
 
 .box-filter{
   background-color: #878787;
-
+  height: 500px;
+   overflow-y: scroll;
 
 }
   .filter-header-box {

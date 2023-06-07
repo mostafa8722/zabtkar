@@ -120,11 +120,13 @@ export default {
     leftButtonHandler() {
       if (this.getCount > 1) {
         this.decrementItemCount({
+          item:this.item,
           product: this.item.product,
           variant: this.item.variant
         })
       } else {
         this.removeItemFromCart({
+          item:this.item,
           product: this.item.product,
           variant: this.item.variant
         })

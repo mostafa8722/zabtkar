@@ -3,6 +3,7 @@
  
     <v-row dense>
       <v-col
+      v-if="getProducts.length>0"
         class="d-flex"
         v-for="(product, index) in getProducts"
         :key="index"
@@ -15,6 +16,21 @@
       >
         <v-responsive min-height="550" class="fill-height" color="transparent">
           <ProductItem :product="product" @select="onProductClick(product)"/>
+        </v-responsive>
+      </v-col>
+      <v-col
+      v-if="getProducts.length>0"
+        class="d-flex"
+       
+        cols="6"
+        xs="4"
+        sm="4"
+        md="4"
+        lg="4"
+        xl="2"
+      >
+        <v-responsive min-height="550" class="fill-height" color="transparent">
+          <p class="regular-font"> کالای یافت نشد </p>
         </v-responsive>
       </v-col>
     </v-row>

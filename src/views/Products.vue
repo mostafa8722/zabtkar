@@ -22,7 +22,7 @@
         cols="3"
        
       >
-        <v-responsive class="p-sticky-0">
+        <v-responsive class="p-sticky-0 ">
           <FilterSection />
         
         </v-responsive>
@@ -150,7 +150,8 @@ export default {
   },
   methods: {
     ...mapMutations('home', ['updateShowProducts']),
-    ...mapActions('home', ['fetchProductsByBrandId', 'fetchProductsByGroupId','setSearchInput','setFilter']),
+    ...mapActions('home',
+     ['fetchProductsByBrandId', 'fetchProductsByGroupId','setSearchInput','setFilter','clearSearchedProducts']),
     handleBackButton() {
       if (!this.$route.query.brand || this.$route.query.group) {
         if (this.showProducts) {
@@ -170,9 +171,13 @@ export default {
     onScroll() {
 
 
+     
       if(!this.isLoading){
       let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;
       if (bottomOfWindow) {
+        if(this.getProducts<=15)
+          this.from = 0 ;
+
         this.from += this.count ;
          
       const data = {
@@ -186,7 +191,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('home', ['isLoading', 'showProducts', 'brandsLoading',"searchQuery","getFilter"]),
+    ...mapGetters('home', ['isLoading', 'showProducts', 'brandsLoading',"searchQuery","getFilter","getProducts"]),
     
   },
   data() {
@@ -202,7 +207,7 @@ export default {
     },
   
     async mounted() {
-  
+  this.clearSearchedProducts();
       this.from = 0;
       this.count = 15;
   
@@ -358,4 +363,5 @@ img {
   .br-50{
     border-radius: 50%;
   }
+ 
 </style>

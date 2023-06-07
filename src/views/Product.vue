@@ -100,12 +100,22 @@
                 <Price :price="getPrice" />
                 <div>
                   <v-btn
-                    v-if="getProductCountInCart == 0"
+
+                    v-if="getProductCountInCart == 0 && getVariants.length>0"
                     @click="onAddToCartClick"
                     color="primary"
                     class="my-auto regular-font"
                   >
                     افزودن به سبد خرید
+                  </v-btn>
+                     <v-btn
+
+                    v-if=" getVariants.length==0"
+                   
+                    color="grey"
+                    class="my-auto regular-font"
+                  >
+                    اتمام موجودی
                   </v-btn>
 
                   <v-chip
@@ -264,14 +274,22 @@
     >
       <div class="d-flex flex-row justify-center">
         <v-btn
-          v-if="getProductCountInCart == 0"
+          v-if="getProductCountInCart == 0  && getVariants.length>0"
           @click="onAddToCartClick"
           color="primary"
           class="my-auto regular-font"
         >
           افزودن به سبد خرید
         </v-btn>
+                <v-btn
 
+        v-if=" getVariants.length==0"
+
+        color="grey"
+        class="my-auto regular-font"
+        >
+        اتمام موجودی
+        </v-btn>
         <v-chip v-if="getProductCountInCart != 0" outlined class="my-auto py-4">
           <div class="d-flex flex-row">
             <v-btn icon @click="incrementHandler">
@@ -376,10 +394,14 @@ export default {
     },
 
     viewCart() {
-      this.setBottomNavigationSelectedItem(3);
-      this.$router.replace({
-        name: "Main",
+      let  query = {
+          cart : "add"
+        };
+      this.$router.push({
+        path: "/",
+        query 
       });
+
     },
     updateVariants(){
    
@@ -443,8 +465,10 @@ export default {
         : null;
     },
     getVariants() {
-      const variants = this.updatedVariants.length? this.updatedVariants:this.getProduct ? this.getProduct.variants : [];
+      //const variants = this.updatedVariants.length? this.updatedVariants:this.getProduct ? this.getProduct.variants : [];
+      const variants =  this.updatedVariants;
      
+      console.log("Ttt",variants)
       return variants.map((variant) => {
         return {
           ...variant,

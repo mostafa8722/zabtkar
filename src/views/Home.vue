@@ -142,21 +142,41 @@ return {
     },
     showFilter(){
       this.openAdd = true
-       }
+       },
+       setSelectedBottomNavigationItem(value) {
+      this.$store.dispatch("setBottomNavigationSelectedItem", value);
+      if (value == 4) {
+        this.$router.replace({
+        name: "Main",
+        query: {
+          
+        },
+      });
+        this.$store.commit("home/updateShowProducts", false);
+        this.$store.commit("home/updateShowSearchedBrands", false);
+      }
+    },
   },
   computed: {
     ...mapGetters('home', ['isLoading', 'showProducts', 'brandsLoading'])
   },
   mounted() {
+  
     if (this.$route.query.brand) {
       this.fetchProductsByBrandId(this.$route.query.brand)
     }
 
-    if (this.$route.query.group) {
-      this.fetchProductsByGroupId(this.$route.query.group)
+    if (this.$route.query.cart) {
+      this.setSelectedBottomNavigationItem(3)
+    }
+    else if (this.$route.query.favorite) {
+      this.setSelectedBottomNavigationItem(2)
+    }else {
+      this.setSelectedBottomNavigationItem(4)
     }
   },
   created() {
+
     window.addEventListener('scroll', this.onScroll);
     window.addEventListener('popstate', this.handleBackButton)
   },

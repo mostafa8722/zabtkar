@@ -21,13 +21,29 @@ export default {
     GroupItem,
   },
   methods: {
-    ...mapActions('home', ['fetchGroups', 'fetchProductsByGroupId']),
+    ...mapActions('home', ['fetchGroups', 'fetchProductsByGroupId','setFilter','setSearchInput']),
     ...mapMutations('home', ['updateProducts']),
     onGroupItemSelect(item) {
      
+
+        const data = {
+       
+       from:0,
+       count : 15,
+     
+     }
+     this.setFilter({
+      name :"",
+    groupIds:item.id,
+    brands : [],
+    variants : [],
+    priceMin:0,
+    priceMax : 0,
+
+     });
+     this.setSearchInput(data);
       this.$router.push({ path: '/products', query: { groupIds : [item.id] } })
-      this.updateProducts([])
-      this.fetchProductsByGroupId(item.id)
+   
     }
   },
   computed: {

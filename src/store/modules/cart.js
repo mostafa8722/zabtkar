@@ -72,6 +72,7 @@ const mutations = {
   },
 
   DECREMENT_ITEM_COUNT(state, payload) {
+    
     for (let item of state.items) {
       if (  item.id && item.id === payload.item.id ) {
         if (item.count > 1)
@@ -82,14 +83,14 @@ const mutations = {
   },
 
   REMOVE_ITEM(state, payload) {
-    state.items = [];
+    //state.items = [];
    
-    return ;
+  
     let index = state.items.findIndex(item => {
       return item.id == payload.item.id 
     })
    
-    if (index > -1 || (payload.variant && payload.variant.exists===false)) {
+    if (index > -1) {
       state.items.splice(index, 1);
     }
   },
@@ -234,7 +235,18 @@ const getters = {
   },
 
   getCartItemsTotalPrice: (state) => {
-    return state.items.reduce((acc, item) => acc + item.external?(item.count*parseInt(item.price)):(item.variant.sellingPrice * item.count), 0);
+
+    let count = 0;
+     state.items.map( item =>{
+      if(item.external)
+      count +=  item.count*parseInt(item.price);
+      else
+      count +=  item.variant.sellingPrice * item.count
+    
+     } )
+
+     return count;
+   // return state.items.reduce((acc, item) => acc + item.external?(item.count*parseInt(item.price)):(item.variant.sellingPrice * item.count));
   },
 
   getItemProducts: (state) => {

@@ -48,6 +48,9 @@ const mutations = {
   updateProducts(state, payload) {
     state.products = [  ...state.products,...payload];
   },
+  clearProducts(state, payload) {
+    state.products = [ ];
+  },
 
   addToProducts(state, payload) {
     state.products = state.products.concat(payload);
@@ -214,7 +217,7 @@ const actions = {
     const priceMin = getters.getFilter.priceMin?getters.getFilter.priceMin:0;
     const priceMax = getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0;
   
-
+    
     console.log("dddd",getters.getFilter.priceMin)
     const data = {
       name: searchInput,
@@ -223,6 +226,9 @@ const actions = {
      groupIds,brands,variants,priceMin,
 
     }
+    if(from==0)
+    commit('clearProducts', []);
+    
     if(priceMax!==0)
     data.priceMax = priceMax;
 
@@ -237,8 +243,8 @@ const actions = {
         commit('updateProducts', response.data.data);
       })
       .catch((error) => {
-        console.log(error);
-        commit('UPDATE_SEARCHED_PRODUCTS', []);
+       
+        commit('clearProducts', []);
       })
       .finally(() => {
         commit('UPDATE_SEARCHING', false);
@@ -311,9 +317,11 @@ const actions = {
   },
 
   clearSearchedProducts({ commit }) {
+ 
     commit('UPDATE_SEARCH', '');
     commit('UPDATE_SEARCHED_PRODUCTS', []);
   },
+ 
 };
 
 const getters = {

@@ -75,7 +75,7 @@
           dense
         
           v-model="search"
-          v-on:keyup.enter="handleEnter"
+          v-on:keyup.enter="showMoreSearchedProducts"
           v-on:keydown="onSearchInput"
           append-icon="mdi-magnify"
           class="regular-font mt-7 rounded "
@@ -345,23 +345,32 @@ export default {
     ...mapActions("credit", ["fetchCredit"]),
     ...mapActions("price", ["fetchMultiplier"]),
     setSelectedBottomNavigationItem(value) {
-      this.$store.dispatch("setBottomNavigationSelectedItem", value);
-      if (value == 4) {
+   
+
+      let query = {};
+        if(value==3){
+          query = {
+          cart : "add"
+        };
+        }else if(value==2){
+          query = {
+          favorite : "add"
+        };
+        }
         this.$router.replace({
         name: "Main",
-        query: {
-          
-        },
+        query 
       });
-        this.$store.commit("home/updateShowProducts", false);
-        this.$store.commit("home/updateShowSearchedBrands", false);
-      }
+      this.$store.dispatch("setBottomNavigationSelectedItem", value);
+     
+    
     },
 
     onProfileMenuItemSelect(index) {
       this.$store.commit("profile/updateSelectedMenuItem", index);
     },
     showMoreSearchedProducts(){
+      
       this.setSearchQuery(this.search);
       this.$router.push({
         path: '/products',

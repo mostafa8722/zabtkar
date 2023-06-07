@@ -81,6 +81,7 @@ const actions = {
       })
       .catch(() => {
         //commit('updateShowProducts', false);
+        commit('updateVariants', []);
       })
       .finally(() => {
         

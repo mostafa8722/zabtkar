@@ -144,18 +144,33 @@
         this.$emit('select')
       },
       viewCart() {
-      this.setBottomNavigationSelectedItem(3);
-      this.$router.replace({
-        name: "Main",
+        
+        let  query = {
+          cart : "add"
+        };
+      this.$router.push({
+        path: "/",
+        query 
       });
+
     },
+    isValidUrl(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (err) {
+    return false;
+  }
+},
       onAddToCartClick() {
-      if (!this.variant  || !this.color || !this.price ||isNaN(this.price) ) {
+
+        
+      if (!this.variant  || !this.color || !this.price ||isNaN(this.price) || !this.isValidUrl(this.link) ) {
 
         !this.price  && isNaN(this.price) &&  (this.snackbarMessage = "  قیمت  وارد شده  صحیح  نمی باشد");
-        !this.size &&  (this.snackbarMessage = "  سایز نمی تواند خالی باشد");
+        !this.variant &&  (this.snackbarMessage = "  سایز نمی تواند خالی باشد");
         !this.color &&  (this.snackbarMessage = "  رنگ نمی تواند خالی باشد");
-        !this.link &&  (this.snackbarMessage = "  لینک نمی تواند خالی باشد");
+         !this.isValidUrl(this.link)  &&  (this.snackbarMessage = " لینک وارد شده معتبر نمی باشد");
         this.snackbar = true;
         this.snackbarTimeout = 3000;
         this.snackbarButton = false;
