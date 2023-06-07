@@ -126,6 +126,7 @@ const actions = {
   },
   setFilter({ commit, getters }, filter ){
    
+    console.log("tttttf",filter)
     commit('UpdateFilter', filter);
 
   },
@@ -171,6 +172,8 @@ const actions = {
         count:7,
       })
       .then((response) => {
+
+        console.log("tttt0",response.data.data)
         commit('updateProducts', response.data.data);
       })
       .catch(() => {
@@ -212,6 +215,7 @@ const actions = {
     const priceMax = getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0;
   
 
+    console.log("dddd",getters.getFilter.priceMin)
     const data = {
       name: searchInput,
       from,

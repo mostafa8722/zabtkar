@@ -26,6 +26,7 @@
         
 
     
+       
 
          <div class="pr-3 pl-3 " v-if="isOpen && type!=='price'" v-for="(item, index) in items" 
         :key="index">
@@ -204,8 +205,10 @@ import { mapActions, mapGetters } from "vuex";
       minPrice(new_val,old_val){
 
         if(!isNaN(new_val) && parseInt(new_val)){
-          this.getFilter.minPrice = parseInt(new_val);
+          this.getFilter.priceMin = parseInt(new_val);
         }
+        console.log("Ttt", parseInt(new_val))
+        console.log("Ttt", this.getFilter)
 
         this.setFilter(this.getFilter);
 
@@ -213,7 +216,7 @@ import { mapActions, mapGetters } from "vuex";
       maxPrice(new_val,old_val){
 
         if(!isNaN(new_val) && parseInt(new_val)){
-          this.getFilter.maxPrice = parseInt(new_val);
+          this.getFilter.priceMشط = parseInt(new_val);
         }
 
         this.setFilter(this.getFilter);
