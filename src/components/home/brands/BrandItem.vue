@@ -41,7 +41,8 @@ export default {
   },
   methods: {
     onItemSelect() {
-      this.$emit('click:select', this.brand)
+    //  this.$emit('click:select', this.brand)
+    this.$router.push({ path: '/products', query: { brands : [this.brand.id] } })
     }
   }
 };

@@ -169,11 +169,7 @@
   font-family: 'OpenSans-SemiBoldItalic';
 }
 
-.header {
-  position: sticky !important;
-  top: 0px !important;
-  z-index: 3 !important;
-}
+
 
 .trimmed-container {
   width: 60vw;
@@ -255,7 +251,7 @@
 .product-container{
   max-width: 800px;
 }
-.v-menu__content{
+.header-section .v-menu__content{
   right: 170px;
   top: 55px !important;;
   max-width: 400px;
@@ -263,14 +259,14 @@
 }
 
 @media only screen and (max-width: 900px) {
-  .v-menu__content{
+  .header-section .v-menu__content{
   
     max-width: 200px;
   }
 }
 
 @media only screen and (max-width: 600px) {
-  .v-menu__content{
+ .header-section  .v-menu__content{
     width: 90%;
     right: 10px;
     top: 55px !important;;

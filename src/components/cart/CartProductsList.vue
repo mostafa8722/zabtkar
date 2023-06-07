@@ -41,7 +41,9 @@
         <v-col class="mb-sm-0 mt-2">
           <v-row dense>
             <v-col v-for="(item, index) in getItems" :key="index" cols="12">
-              <CartProductItem :item="item" />
+            
+            
+              <CartProductItem  :item="item" />
             </v-col>
           </v-row>
         </v-col>
@@ -192,6 +194,8 @@ export default {
     },
     async refreshCartVariants() {
       const result = await this.refreshCart()
+
+   
       if (!result) {
         this.showSnackbar('خطا در بروزرسانی سبد خرید!')
         return false;

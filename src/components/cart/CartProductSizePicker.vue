@@ -10,11 +10,11 @@
         color="secondary"
         style="maxWidth: fit-content"
       >
-        سایز: {{ getVariantValue }}
+        سایز: {{ item.external?item.variant:getVariantValue  }}
       </v-chip>
     </template>
 
-    <v-list color="secondary">
+    <v-list v-if="!item.external" color="secondary">
       <v-list-item color="white" v-for="(item, index) in getVariants" :key="index" @click="$emit('update:variant', item)">
         <v-list-item-title class="picker-title">
           <span class="regular-font" style="color: white">
@@ -37,7 +37,11 @@ export default {
     variant: {
       type: Object,
       default: null
-    }
+    },
+    item: {
+      type: Object,
+      default: null
+    },
   },
   emits: ['update:variant'],
   computed: {

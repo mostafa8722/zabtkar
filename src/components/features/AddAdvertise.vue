@@ -2,98 +2,7 @@
    
       <v-card    class="mx-auto d-flex flex-column box-filter mt-5" >
 
-        <v-snackbar
-      v-model="snackbar"
-      :timeout="snackbarTimeout"
-      class="bold-font pa-3"
-      dir="rtl"
-      top
-    >
-      {{ snackbarMessage }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          v-if="snackbarButton"
-          class="mx-3"
-          color="primary"
-          @click="viewCart"
-          v-bind="attrs"
-        >
-          برو به سبد
-        </v-btn>
-      </template>
-    </v-snackbar>
-
-        <h3 class="medium-font font-15 justify-center d-flex mt-3"> افزودن کالا به سبد خرید از طریق لینک</h3>
-        <div class="filter-header-box mt-3 d-flex mr-2 ml-2">
-          <h5 class="regular-font font-11 text-orange" >   کاربر گرامی به دلیل  تنوع بالای برندها ، امکان لیست کردن     </h5>
-          <h5 class="regular-font  font-11 mt-2 text-orange" >  همه محصولات در این وبسایت وجود ندارد      </h5>
-          <h5 class="regular-font font-11   mt-4 text-orange" >     لطفا جهت سفارش کالای لیست نشده در وبسایت    </h5>
-          <h5 class="regular-font font-11  mt-2 text-orange" >          فرم زیر را پر کنید تا به سبدتان اضافه شود.     </h5>
-          
-        </div>
-
-        <div class="line-divider mt-4"></div>
-    
-        <v-card-title class="line-clamp-5">
-          <div class="product-item-title__wrapper">
-  
-           
-          </div>
-        </v-card-title>
-
-        <div class="d-flex flex-column  mr-2 ml-2">
-          <v-text-field
-          dense
-          class="regular-font mt-3 "
-          label="لینک کالا"
-          placeholder="  لینک کالا "
-          background-color="white"
-          outlined
-          v-model="link"
-          type="text"
-            ></v-text-field>
-
-            <v-text-field
-          dense
-          v-model="variant"
-          class="regular-font mt-3 "
-          label=" سایز"
-          placeholder="   سایز "
-          background-color="white"
-          outlined
-          type="text"
-            ></v-text-field>
-
-            <v-text-field
-          dense
-          class="regular-font mt-3 "
-          label=" رنگ"
-          placeholder="   رنگ "
-          background-color="white"
-          outlined
-          v-model="color"
-          type="text"
-            ></v-text-field>
-
-            <v-text-field
-          dense
-          class="regular-font mt-3 "
-          label=" قیمت (به لیر)"
-          placeholder="   قیمت (به لیر) "
-          background-color="white"
-          outlined
-          v-model="price"
-          type="text"
-            ></v-text-field>
-
-        </div>
-
-        <v-btn 
-        @click.prevent = "onAddToCartClick"
-        class=" regular-font mt-auto mt-2  mb-4 mr-5 ml-5 white--text add-product"   height="50" variant='text' color="#FD562E" >افزودن به سبد</v-btn>
-    
-        
+      
       </v-card>
   </template>
   
@@ -198,9 +107,8 @@
 .box-filter{
   background-color: #878787;
   border-radius: 20px;
-
   margin-left: 40px!important;
-
+  height:300px;
 }
   .filter-header-box {
     background-color: #FFE5C6;

@@ -1,5 +1,6 @@
 <template>
   <v-container class="mt-3" id="container" :class="($vuetify.breakpoint.lgAndUp) ? '' : ''">
+ 
     <v-row dense>
       <v-col
         class="d-flex"

@@ -24,25 +24,26 @@
       <v-col
         
         
-        v-if="$vuetify.breakpoint.width > 600"
-          
-          cols="3"
-         
-        >
-          <v-responsive min-height="130px" class="fill-height">
-            
-          
-          </v-responsive>
-        </v-col>
+      v-if="$vuetify.breakpoint.width > 600"
+        
+        cols="3"
+       
+      >
+        <v-responsive  class="p-sticky-0">
+          <AddAdvertise />
+        
+        </v-responsive>
+      </v-col>
       <v-col
         
         
       :cols="$vuetify.breakpoint.width > 600?6:12"
        
       >
-        <v-responsive min-height="130px" class="fill-height">
+        <v-responsive >
          
           <BrandList />
+
         
         </v-responsive>
       </v-col>
@@ -106,6 +107,7 @@ import BrandList from '../components/home/brands/BrandList'
 import ProductList from '../components/home/products/ProductList'
 import FilterSection from '../components/features/Filters'
 import AddProduct from '../components/features/AddProduct'
+import AddAdvertise from '../components/features/AddAdvertise'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import BottomNavigation from '@/components/BottomNavigation.vue'
 
@@ -118,6 +120,7 @@ export default {
     ProductList,
     FilterSection,
     AddProduct,
+    AddAdvertise,
     BottomNavigation
 },
 data(){
@@ -154,6 +157,7 @@ return {
     }
   },
   created() {
+    window.addEventListener('scroll', this.onScroll);
     window.addEventListener('popstate', this.handleBackButton)
   },
   destroyed() {

@@ -34,7 +34,7 @@
         :cols="$vuetify.breakpoint.width > 600?6:12"
        
       >
-        <v-responsive min-height="130px" class="fill-height">
+        <v-responsive >
          
         
           <ProductList />
@@ -150,7 +150,7 @@ export default {
   },
   methods: {
     ...mapMutations('home', ['updateShowProducts']),
-    ...mapActions('home', ['fetchProductsByBrandId', 'fetchProductsByGroupId']),
+    ...mapActions('home', ['fetchProductsByBrandId', 'fetchProductsByGroupId','setSearchInput','setFilter']),
     handleBackButton() {
       if (!this.$route.query.brand || this.$route.query.group) {
         if (this.showProducts) {
@@ -176,17 +176,17 @@ export default {
         this.from += this.count ;
          
       const data = {
-        group :  this.$route.query.group?this.$route.query.group:1,
+     
         from:this.from,
         count : this.count
       }
-      this.fetchProductsByGroupId(data);
+      this.setSearchInput(data);
       }
     }
     }
   },
   computed: {
-    ...mapGetters('home', ['isLoading', 'showProducts', 'brandsLoading',"searchQuery"]),
+    ...mapGetters('home', ['isLoading', 'showProducts', 'brandsLoading',"searchQuery","getFilter"]),
     
   },
   data() {
@@ -201,14 +201,50 @@ export default {
       }
     },
   
-    mounted() {
+    async mounted() {
   
+      this.from = 0;
+      this.count = 15;
+  
+      let groupIds = [];
+      let brands = [];
+      let variants = [];
+      let name =   "";
+      let priceMin =  0;
+      let priceMax =   0;
+
+      if(this.$route.query.groupIds)
+      groupIds.push(parseInt(this.$route.query.groupIds))
+
+      if(this.$route.query.search)
+      name  = this.$route.query.search; 
+
+      if(this.$route.query.brands)
+      brands .push( parseInt(this.$route.query.brands)); 
+
+      if(this.$route.query.variants)
+      variants .push( this.$route.query.variants); 
+
+      if(this.$route.query.priceMin)
+      priceMin  = this.$route.query.priceMin; 
+
+
+      if(this.$route.query.priceMax)
+      priceMax  = this.$route.query.priceMax; 
+
+      const filter  = {groupIds,name,brands,variants,priceMax,priceMin}
+
+
+
+      await this.setFilter(filter);
       const data = {
-        group :  this.$route.query.group?this.$route.query.group:1,
+       
         from:this.from,
-        count : this.count
+        count : this.count,
+      
       }
-      this.fetchProductsByGroupId(data);
+ 
+      this.setSearchInput(data);
 
 
     
@@ -226,14 +262,21 @@ export default {
    
       this.from = 0;
       this.count = 15;
+      
+   
       const data = {
-        group :  this.$route.query.group?this.$route.query.group:1,
+     
         from:this.from,
-        count : this.count
+        count : this.count,
+      
       }
-      this.fetchProductsByGroupId(data);
+      this.setSearchInput(data);
     }
-  }
+  },
+  getFilter(new_val,old_val){
+   
+console.log("ttt000000",new_val)
+ }
 }
 </script>
 

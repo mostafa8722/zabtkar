@@ -477,7 +477,7 @@ export default {
       this.fetchProduct({
         id: this.$route.query.id,
       });
-      this.refreshVariants(this.$route.query.id)
+     this.refreshVariants(this.$route.query.id)
     }
     // if (this.getProduct && this.getProduct.variants.length > 0) {
     //   this.variant = this.getProduct.variants[0];

@@ -1,5 +1,5 @@
 <template>
-      <v-card   title="This is a title" class="mx-auto d-flex flex-column  box-filter mt-5" >
+      <v-card   class="mx-auto d-flex flex-column  box-filter mt-5" >
 
         <h3 class="medium-font font-15 justify-center d-flex mt-3"> فیلتر</h3>
         <div class="filter-header-box mt-3 d-flex mr-3 ml-3">
@@ -11,10 +11,10 @@
         <div class="line-divider mt-4"></div>
         <FilterList :items="getGroups" title="گروه کالا" :isOpen="false" type="group"  />
         <FilterList :items="getBrandList" title="برند" :isOpen="false" type="brand"  />
-        <FilterList :items="[1,2,3]" title="سایز" :isOpen="false" type="size"  />
+        <FilterList :items="variants" title="سایز" :isOpen="false" type="size"  />
         <FilterList :items="[1,2,3]" title="محدوده ی قیمت (لیر)" :isOpen="false" type="price"  />
        
-        <v-btn class=" regular-font mt-15 mr-5 ml-5 mb-4 white--text"   height="50" variant='text' color="#FD562E" > اعمال </v-btn>
+        <v-btn @click="handleFilters" class=" regular-font mt-15 mr-5 ml-5 mb-4 white--text"   height="50" variant='text' color="#FD562E" > اعمال </v-btn>
     
     
         <div></div>
@@ -43,33 +43,55 @@
     
     },
     mounted(){
-      this.fetchBrands({from:0,count:10})
+      this.fetchBrands({from:0,count:10});
+      this.getVariants2();
     },
     data() {
       return {
         isActive: false,
         showOriginalName: true,
         showLirPrice: true,
+        variants:[],
      
       }
     },
     methods: {
       ...mapActions("price", ["convertLirToToman"]),
-      ...mapActions('home', ['fetchBrands', 'fetchProductsByGroupId']),
-      ...mapActions('bookmark', ['addBookmark', 'deleteBookmark']),
-      onProductItemClick() {
-        this.$emit('select')
-      },
+      ...mapActions('home', ['fetchBrands', 'fetchProductsByGroupId','setSearchInput']),
+      ...mapActions('bookmark', ['addBookmark', 'deleteBookmark',]),
      
+      handleFilters(){
+
+        const data = {
+       
+       from:0,
+       count : 15,
+     
+     }
+
+     this.setSearchInput(data);
+      },
   
-  
+    
     },
     computed: {
       ...mapGetters("price", ["getMultiplier"]),
       ...mapGetters('bookmark', ['isBookmarked']),
-      ...mapGetters('home', ['getGroups' ,'getBrands','getBrandsCount', 'getSearchedBrands', 'getShowSearchedBrands']),
+      ...mapGetters('home', ['getGroups' ,'getBrands','getProducts','getBrandsCount', 'getSearchedBrands', 'getShowSearchedBrands','getFilter']),
   
+      getVariants() {
+
+        console.log("getProducts",this.getProducts)
+
+      //const variants = this.updatedVariants.length? this.updatedVariants:this.getProduct ? this.getProduct.variants : [];
      
+      // return variants.map((variant) => {
+      //   return {
+      //     ...variant,
+      //     disabled: !variant.exists,
+      //   };
+      // });
+    },
       getBrandList() {
       return (this.getShowSearchedBrands) ? this.getSearchedBrands : this.getPaginatedBrands
     },
@@ -79,6 +101,24 @@
   
      
     },
+    watch:{
+      getProducts(new_val,old_val){
+        console.log("getProducts2",new_val)
+        let sizes = [];
+        new_val.map(item=>  { sizes.push (...item.variants)});
+     
+       const seen = new Set();
+       const uniqueAuthors = sizes.filter(item => {
+  const duplicate = seen.has(item.id);
+  seen.add(item.id);
+  return !duplicate;
+});
+
+console.log("getProducts3",uniqueAuthors)
+      this.variants = uniqueAuthors;
+
+      }
+    }
   };
   </script>
   

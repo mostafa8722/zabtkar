@@ -29,11 +29,15 @@
 
          <div class="pr-3 pl-3 " v-if="isOpen && type!=='price'" v-for="(item, index) in items" 
         :key="index">
+         
           <v-checkbox
             class="regular-font  "
             :label="getTitle(item)"
             color="red"
-            value="red"
+       
+          
+            :input-value="handleChecked(item)"
+            @change="handleFilter($event,item)"
             hide-details
           ></v-checkbox>
 
@@ -49,6 +53,7 @@
           placeholder="   از  "
           background-color="white"
           outlined
+          v-model="minPrice"
           type="text"
             ></v-text-field>
 
@@ -61,6 +66,7 @@
           background-color="white"
           outlined
           type="text"
+          v-model="maxPrice"
             ></v-text-field>
           
 
@@ -75,7 +81,8 @@
   
   <script>  
  // import Price from '@/components/base/Price.vue'
-  import { mapActions, mapGetters } from "vuex";
+
+import { mapActions, mapGetters } from "vuex";
   
   export default {
     name: "Filter",
@@ -112,19 +119,74 @@
         isActive: false,
         showOriginalName: true,
         showLirPrice: true,
+        minPrice : 0,
+        maxPrice:'',
       }
     },
     methods: {
       ...mapActions("price", ["convertLirToToman"]),
       ...mapActions('bookmark', ['addBookmark', 'deleteBookmark']),
+
+      ...mapActions('home', ['setSearchInput','setFilter']),
+
+
       handleClick() {
         this.isOpen =  !this.isOpen;
       },
       getTitle(item){
-        if(this.type==="group" || this.type==="brand" )
+        if(this.type!=="price"  )
         return item.name;
         else
         return "a";
+      },
+      handleFilter(event,item){
+      
+      const groupIds = this.getFilter.groupIds;
+      const brands = this.getFilter.brands;
+      const variants = this.getFilter.variants;
+      if(this.type==="group"  ){
+       
+        const index = groupIds.findIndex((group)=>group==event);
+        
+        index<=-1 && event ? groupIds.push(item.id) : groupIds.splice(index,0) ;
+      }else  if(this.type==="brand"  ){
+       const index = brands.findIndex((brand)=>brand==item.id);
+       index<=-1 && event ? brands.push(item.id) : brands.splice(index,1) ;
+     }else  if(this.type==="size"  ){
+       const index = variants.findIndex((variant)=>variant==item.id);
+       index<=-1 && event ? variants.push(item.id) : variants.splice(index,1) ;
+     }
+      this.getFilter.groupIds = groupIds;
+      this.getFilter.brands = brands;
+      this.getFilter.variants = variants;
+
+      this.setFilter(this.getFilter);
+     
+      
+      },
+      handleChecked(item){
+        const groupIds = this.getFilter.groupIds;
+      const brands = this.getFilter.brands;
+      const variants = this.getFilter.variants;
+  
+      if(this.type==="group"  ){
+       
+        const index = groupIds.findIndex((group)=>group==item.id);
+        
+       return  index<=-1  ? false : true ;
+      }else  if(this.type==="brand"  ){
+       
+       const index = brands.findIndex((brand)=>brand==item.id);
+       
+     return   index<=-1  ? false : true ;
+     }else  if(this.type==="size"  ){
+       
+       const index = variants.findIndex((variant)=>variant==item.id);
+       
+     return   index<=-1  ? false : true ;
+     }
+    
+      
       }
   
   
@@ -132,10 +194,32 @@
     computed: {
       ...mapGetters("price", ["getMultiplier"]),
       ...mapGetters('bookmark', ['isBookmarked']),
+      ...mapGetters('home', ["searchQuery","getFilter"]),
   
   
      
     },
+
+    watch:{
+      minPrice(new_val,old_val){
+
+        if(!isNaN(new_val) && parseInt(new_val)){
+          this.getFilter.minPrice = parseInt(new_val);
+        }
+
+        this.setFilter(this.getFilter);
+
+      },
+      maxPrice(new_val,old_val){
+
+        if(!isNaN(new_val) && parseInt(new_val)){
+          this.getFilter.maxPrice = parseInt(new_val);
+        }
+
+        this.setFilter(this.getFilter);
+
+        }
+    }
   };
   </script>
   

@@ -67,7 +67,8 @@
       </v-tooltip>
     </div>
 
-    <v-menu  nudge-top="25px"  >
+    <div class="header-section">
+      <v-menu     >
       <template v-slot:activator="{ on, attrs }">
        
         <v-text-field
@@ -77,7 +78,7 @@
           v-on:keyup.enter="handleEnter"
           v-on:keydown="onSearchInput"
           append-icon="mdi-magnify"
-          class="regular-font mt-7 rounded-pill"
+          class="regular-font mt-7 rounded "
           label="جستجو"
           placeholder="نام محصول مورد نظر را وارد کنید"
           background-color="white"
@@ -94,10 +95,10 @@
       </template>
      
      
-      <v-card width="100%" v-if="!isSearching && search && search.length>2">
+      <v-card    width="100%" v-if="!isSearching && search && search.length>2">
        
 
-        <v-list v-if=" !isSearching && search && search.length>2">
+        <v-list  v-if=" !isSearching && getSearchedProducts.length >0  && search.length>=3">
           <p v-if="!isSearching" class="bold-font mx-6 my-3">محصولات</p>
           <v-list-item
             :disabled="isSearching"
@@ -201,6 +202,8 @@
         ></v-progress-linear>
     </v-menu>
 
+    </div>
+  
     <v-spacer  ></v-spacer>
 
     <div v-if="$vuetify.breakpoint.width > 600"></div>
@@ -329,6 +332,7 @@ export default {
     ...mapActions("product", ["setProduct"]),
     ...mapActions("home", [
       "setSearchInput",
+      "setSearchInputBox",
       "showSearchedProducts",
       "showSearchedBrands",
       "clearSearchedProducts",
@@ -370,9 +374,16 @@ export default {
     onSearchInput(value) {
       clearTimeout(this.debounce);
 
-      
-      this.debounce = setTimeout(() => {
 
+      this.search.length<=2 ? this.setSearching(false) :
+      this.setSearching(true);
+
+      console.log(this.isSearching)
+      console.log(this.search)
+      console.log(value.target.value)
+    
+      this.debounce = setTimeout(() => {
+        this.setSearching(true);
 
         const searchItem = {
           name : this.search,
@@ -380,8 +391,8 @@ export default {
           count:5
         }
     
-        this.search.length>0 && (
-       this.setSearching(true) , this.setSearchInput(searchItem));
+        this.search.length>2 && (
+        this.setSearchInputBox(searchItem));
 
       }, 1000);
     },
@@ -454,13 +465,13 @@ export default {
   watch:{
     search(new_val,old_val){
      
-      console.log("ttt00",this.search)
+      // console.log("ttt00",this.search)
 
-       if(new_val.length<=2){
+      //  if(new_val.length<=2){
        
-        this.setSearching(false) ;
-        this.clearSearchedProducts();
-      } 
+      //   this.setSearching(false) ;
+      //   this.clearSearchedProducts();
+      // } 
       // (this.onSearchInput(new_val) ,  this.setSearching(true) );
       // if(new_val.length<=2){
        
@@ -474,4 +485,21 @@ export default {
 </script>
 
 <style scoped>
+.header-section{
+  width: 400px;
+  position: relative;
+}
+.v-menu__content{
+  top: 55px !important;
+  max-width: 400px;
+}
+.rounded{
+  border-radius: 20px!important;;
+}
+@media only screen and (max-width: 600px) {
+ .v-menu__content{
+  
+    max-width: 600px;
+  }
+}
 </style>

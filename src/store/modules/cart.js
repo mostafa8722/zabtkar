@@ -24,7 +24,8 @@ const mutations = {
       product: payload.product,
       variant: payload.variant,
       count: 1,
-      external:false
+      external:false,
+      id:new Date().getTime()
     });
    
   },
@@ -36,7 +37,8 @@ const mutations = {
       color: payload.color,
       variant: payload.variant,
       count: 1,
-      external:true
+      external:true,
+      id:new Date().getTime()
     });
    
   },
@@ -51,24 +53,27 @@ const mutations = {
   },
 
   UPDATE_CART(state) {
-   let items_exist =  state.items.filter((item) => item.variant.exists===true && !item.external);
+   let items_exist =  state.items.filter((item) => (item.variant && item.variant.exists===true) || item.external);
     state.items = items_exist; 
+ 
   
     
   },
 
   INCREMENT_ITEM_COUNT(state, payload) {
+    
     for (let item of state.items) {
-      if (item.product.id === payload.product.id && item.variant.id === payload.variant.id) {
+      
+      if (  item.id && item.id === payload.item.id ) {
         item.count = item.count + 1;
-        break;
+        
       }
     }
   },
 
   DECREMENT_ITEM_COUNT(state, payload) {
     for (let item of state.items) {
-      if (item.product.id === payload.product.id && item.variant.id === payload.variant.id) {
+      if (  item.id && item.id === payload.item.id ) {
         if (item.count > 1)
           item.count = item.count - 1;
         break;
@@ -77,11 +82,14 @@ const mutations = {
   },
 
   REMOVE_ITEM(state, payload) {
+    state.items = [];
+   
+    return ;
     let index = state.items.findIndex(item => {
-      return item.product.id == payload.product.id && item.variant.id == payload.variant.id
+      return item.id == payload.item.id 
     })
    
-    if (index > -1 || payload.variant.exists===false) {
+    if (index > -1 || (payload.variant && payload.variant.exists===false)) {
       state.items.splice(index, 1);
     }
   },
@@ -106,6 +114,8 @@ const mutations = {
 
 const actions = {
   addToCart({commit, getters}, payload) {
+
+    console.log("paylodaa",payload)
    
     let item = getters.getCartItem(payload.product.id, payload.variant.id) && payload.variant.exists ;
     if (!item ) {
@@ -146,7 +156,7 @@ const actions = {
   },
 
   async refreshCart({rootState, getters}) {
-    alert()
+  
     if (!rootState.auth.token) {
       return false
     }
@@ -224,7 +234,7 @@ const getters = {
   },
 
   getCartItemsTotalPrice: (state) => {
-    return state.items.reduce((acc, item) => acc + item.external?(item.count*item*price):(item.variant.sellingPrice * item.count), 0);
+    return state.items.reduce((acc, item) => acc + item.external?(item.count*parseInt(item.price)):(item.variant.sellingPrice * item.count), 0);
   },
 
   getItemProducts: (state) => {
@@ -234,7 +244,7 @@ const getters = {
   getCartItem: (state) => (productId, productVariantId) => {
     let foundItem = null;
     for (let item of state.items) {
-      if (item.product.id === productId && item.variant.id === productVariantId) {
+      if (!item.external && item.product.id === productId && item.variant.id === productVariantId) {
         foundItem = item;
         break;
       }
@@ -243,7 +253,10 @@ const getters = {
   },
 
   getVariants: (state) => {
-    return state.items.map(item => item.variant.id)
+
+    let variants =  state.items.filter(item => !item.external );
+   return  variants.map(item => item.variant.id)
+      
   }
 }
 

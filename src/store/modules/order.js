@@ -62,8 +62,9 @@ const actions = {
         }
       }
   
-      const items = rootState.cart.items;
-      console.log(items);
+      const items = rootState.cart.items.filter((item)=>item.external===false);
+      const directItems = rootState.cart.items.filter((item)=>item.external===true);
+  
       const data = {
         items: items.map(item => {
           return {
@@ -71,11 +72,19 @@ const actions = {
             productVariantId: item.variant.id
           }
         }),
+        directItems : directItems.items.map(item => {
+          return {
+            count: item.count,
+            link: item.link,
+            price: item.price,
+            color: item.color,
+            size: item.variant,
+          }
+        }),
         addressId: payload.addressId
       }
   
-      console.log(data);
-      console.log(config);
+      
       commit('UPDATE_LOADING', true)
       axios.post('/Basket/Create', data, config)
         .then(response => {

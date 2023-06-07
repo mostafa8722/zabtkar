@@ -13,6 +13,15 @@ const state = () => ({
   showSearchedBrands: false,
   searchedBrands: [],
   searchQuery : "",
+  filter:{
+    name :"",
+    groupIds:[],
+    brands : [],
+    variants : [],
+    priceMin:0,
+    priceMax : 0,
+
+  }
 });
 
 const mutations = {
@@ -37,7 +46,7 @@ const mutations = {
   },
 
   updateProducts(state, payload) {
-    state.products = payload;
+    state.products = [  ...state.products,...payload];
   },
 
   addToProducts(state, payload) {
@@ -67,6 +76,12 @@ const mutations = {
 
   updateShowSearchedBrands(state, payload) {
     state.showSearchedBrands = payload;
+  },
+
+  UpdateFilter(state, payload) {
+
+ 
+    state.filter = payload;
   },
 };
 
@@ -109,6 +124,11 @@ const actions = {
     commit('UpdateSearchQuery', search);
 
   },
+  setFilter({ commit, getters }, filter ){
+   
+    commit('UpdateFilter', filter);
+
+  },
   fetchProductsByGroupId({ commit, getters }, data) {
 
     //if (getters.isLoading) return;
@@ -139,7 +159,7 @@ const actions = {
   },
 
   fetchProductsByBrandId({ commit }, brand_id) {
-    alert(2)
+
     commit('updateLoading', true);
     commit('updateShowProducts', true);
     commit('updateProducts', []);
@@ -180,32 +200,81 @@ const actions = {
       });
   },
 
-  setSearchInput({ commit, dispatch }, search) {
+  setSearchInput({ commit, getters }, search) {
+
+    const searchInput = getters.getFilter.name;
+    const from  = search.from;
+    const count =  search.count;
+    const groupIds = getters.getFilter.groupIds? getters.getFilter.groupIds:[];
+    const brands = getters.getFilter.brands?getters.getFilter.brands:[];
+    const variants = getters.getFilter.variants?getters.getFilter.variants:[];
+    const priceMin = getters.getFilter.priceMin?getters.getFilter.priceMin:0;
+    const priceMax = getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0;
+  
+
+    const data = {
+      name: searchInput,
+      from,
+     count,
+     groupIds,brands,variants,priceMin,
+
+    }
+    if(priceMax!==0)
+    data.priceMax = priceMax;
+
+    
+
+
+    axios
+      .post(`/Store/SearchProducts`, data)
+      .then((response) => {
+   
+      
+        commit('updateProducts', response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        commit('UPDATE_SEARCHED_PRODUCTS', []);
+      })
+      .finally(() => {
+        commit('UPDATE_SEARCHING', false);
+      });
+  },
+
+  setSearchInputBox({ commit, getters }, search) {
 
     const searchInput = search.name;
     const from  = search.from;
     const count =  search.count;
-    console.log("ttttta",searchInput)
-    if (!searchInput || searchInput === '') {
-      dispatch('clearSearchedProducts');
-      return;
+    // const groupIds = getters.getFilter.groupIds? getters.getFilter.groupIds:[];
+    // const brands = getters.getFilter.brands?getters.getFilter.brands:[];
+    // const variants = getters.getFilter.variants?getters.getFilter.variants:[];
+    // const priceMin = getters.getFilter.priceMin?getters.getFilter.priceMin:0;
+    // const priceMax = getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0;
+  
+
+    const data = {
+      name: searchInput,
+      from,
+     count,
+    // groupIds,brands,variants,priceMin,
+
     }
-    console.log("tttttb",searchInput)
+    // if(priceMax!==0)
+    // data.priceMax = priceMax;
+
     commit('UPDATE_SEARCH', searchInput);
-    if (!searchInput) return;
-    commit('UPDATE_SEARCHING', true);
 
-    console.log("ttttt",searchInput)
+   
+
+
+    console.log("tttt")
     axios
-      .post(`/Store/SearchProducts`, {
-        name: searchInput,
-        from : from,
-        count:count,
-
-      })
+      .post(`/Store/SearchProducts`, data)
       .then((response) => {
         console.log(searchInput, response.data);
         commit('UPDATE_SEARCHED_PRODUCTS', response.data.data);
+       
       })
       .catch((error) => {
         console.log(error);
@@ -261,6 +330,7 @@ const getters = {
     return state.brands.slice(start, end);
   },
   getProducts(state) {
+    console.log("tttt",state.products)
     return state.products
   },
   showProducts(state) {
@@ -275,6 +345,7 @@ const getters = {
   getSearchedProducts(state) {
     return state.searchedProducts;
   },
+
   getSearchedProductsSliced:
     (state) =>
     (n = 3) => {
@@ -284,6 +355,7 @@ const getters = {
   getSearchedBrands: (state) => state.searchedBrands,
   getShowSearchedBrands: (state) => state.showSearchedBrands,
   searchQuery: (state) => state.searchQuery,
+  getFilter: (state) => state.filter,
 };
 
 export default {
