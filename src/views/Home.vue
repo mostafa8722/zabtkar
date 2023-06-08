@@ -171,7 +171,7 @@ return {
     }
     else if (this.$route.query.favorite) {
       this.setSelectedBottomNavigationItem(2)
-    }else if (this.$route.query.profile) {
+    }else if (this.$route.query.profile && this.$vuetify.breakpoint.width<=600 ) {
       this.setSelectedBottomNavigationItem(1)
     }else {
       this.setSelectedBottomNavigationItem(4)

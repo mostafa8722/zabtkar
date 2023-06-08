@@ -34,7 +34,7 @@ export default {
      }
      this.setFilter({
       name :"",
-    groupIds:item.id,
+    groupIds:[item.id],
     brands : [],
     variants : [],
     priceMin:0,

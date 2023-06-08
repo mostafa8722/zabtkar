@@ -22,12 +22,12 @@
       </div>
       <v-container class="product-container">
         <v-row>
-          <v-col cols="6">
+          <v-col cols="7">
             <v-sheet elevation="2" class="pa-6 rounded-lg">
               <ProductImages gallery contain :images="getImages" />
             </v-sheet>
           </v-col>
-          <v-col cols="6" class="flex-grow-1 flex-shrink-0">
+          <v-col cols="5" class="flex-grow-1 flex-shrink-0">
             <v-sheet elevation="2" class="rounded-lg pa-6">
               <p
                 class="text-h5 line-clamp"
@@ -283,7 +283,7 @@
         </v-btn>
                 <v-btn
 
-        v-if=" getVariants.length==0"
+        v-if=" getProductCountInCart == 0 && getVariants.length==0"
 
         color="grey"
         class="my-auto regular-font"
@@ -484,6 +484,7 @@ export default {
     },
     getProductCountInCart() {
       if (!this.variant) return 0;
+    
       let item = this.getCartItem(this.getProduct.id, this.getVariant.id);
       return item ? item.count : 0;
     },

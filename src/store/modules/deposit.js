@@ -21,17 +21,19 @@ const actions = {
       }
     }
 
-
+    console.log("aaad2",config)
     commit('UPDATE_LOADING', true)
     try {
       const formData = new FormData();
       formData.append('Amount', payload.amount)
       formData.append('TrackingNumber', payload.trackingNumber)
       formData.append('BillImage', payload.billImage)
+      console.log("aaad3",config)
       const response = await api.post('/User/Deposit', formData, config)
-      console.log(response.data)
+      console.log("aaad5",response)
       return response.data.success;
     } catch (error) {
+      console.log("aaad",error.message)
       throw new Error(error.message)
     } finally {
       commit('UPDATE_LOADING', false)

@@ -167,7 +167,10 @@ const actions = {
     commit('updateLoading', true);
     commit('updateShowProducts', true);
     commit('updateProducts', []);
+
+    console.log("aaa")
     axios
+    
       .post(`/Store/SearchProducts`, {
         brand: brand_id,
         name :"",
@@ -191,6 +194,7 @@ const actions = {
     commit('updateLoading', true);
     commit('updateShowProducts', true);
     commit('updateProducts', []);
+    console.log("aaa2")
     axios
       .post(`/Store/SearchProducts`, {
         name: name,
@@ -234,7 +238,7 @@ const actions = {
 
     
 
-
+    console.log("aaa3",data)
     axios
       .post(`/Store/SearchProducts`, data)
       .then((response) => {
@@ -279,6 +283,7 @@ const actions = {
 
 
     console.log("tttt")
+    console.log("aaa4")
     axios
       .post(`/Store/SearchProducts`, data)
       .then((response) => {
