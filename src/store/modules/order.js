@@ -72,7 +72,7 @@ const actions = {
             productVariantId: item.variant.id
           }
         }),
-        directItems : directItems.items.map(item => {
+        directItems : directItems.map(item => {
           return {
             count: item.count,
             link: item.link,
@@ -83,7 +83,7 @@ const actions = {
         }),
         addressId: payload.addressId
       }
-  
+     
       
       commit('UPDATE_LOADING', true)
       axios.post('/Basket/Create', data, config)

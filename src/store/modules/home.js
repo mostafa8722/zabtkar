@@ -48,7 +48,7 @@ const mutations = {
   updateProducts(state, payload) {
     state.products = [  ...state.products,...payload];
   },
-  clearProducts(state, payload) {
+  clearProducts(state) {
     state.products = [ ];
   },
 

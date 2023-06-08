@@ -185,11 +185,13 @@ export default {
             this.$store.commit('profile/updateSelectedMenuItem', 7)
             this.clearCart()
           }).catch(() => {
-            this.snackbar = true;
+            this.snackbar = true; 
+            this.snackbarMessage = " خطا در  ثبت اطلاعات لطفا دوباره تلاش کنید و یا با پشتیبانی تماس بگیرید"
           })
         }
       } catch (error) {
         this.snackbar = true;
+        this.snackbarMessage = " خطا در  ثبت اطلاعات لطفا دوباره تلاش کنید و یا با پشتیبانی تماس بگیرید"
       }
     },
     async refreshCartVariants() {

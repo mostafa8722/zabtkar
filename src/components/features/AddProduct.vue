@@ -146,12 +146,13 @@
       viewCart() {
         
         let  query = {
-          cart : "add"
+          cart : "insert"
         };
       this.$router.push({
         path: "/",
         query 
       });
+      this.$store.dispatch("setBottomNavigationSelectedItem", 3);
 
     },
     isValidUrl(string) {
