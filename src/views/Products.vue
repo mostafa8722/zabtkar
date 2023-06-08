@@ -19,7 +19,7 @@
       <v-col
       v-if="$vuetify.breakpoint.width > 600"
         
-        cols="3"
+        cols="2"
        
       >
         <v-responsive class="p-sticky-0 ">
@@ -31,7 +31,7 @@
       <v-col
         
         
-        :cols="$vuetify.breakpoint.width > 600?6:12"
+        :cols="$vuetify.breakpoint.width > 600?8:12"
        
       >
         <v-responsive >
@@ -44,7 +44,7 @@
       <v-col
       v-if="$vuetify.breakpoint.width > 600"
         
-        cols="3"
+        cols="2"
        
       >
         <v-responsive class="p-sticky-0" >
