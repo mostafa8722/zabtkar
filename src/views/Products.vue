@@ -78,6 +78,8 @@
     >
     <AddProduct/>
       </v-dialog>
+
+      <BottomNavigation/>
       
 
     <div class="contact-us d-none d-sm-flex flex-column">
@@ -137,6 +139,7 @@ import FilterSection from '../components/features/Filters'
 import AddProduct from '../components/features/AddProduct'
 import AppBarVue from '../components/AppBar'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
+import BottomNavigation from '@/components/BottomNavigation.vue'
 
 export default {
   name: 'products',
@@ -146,8 +149,10 @@ export default {
     BrandList,
     ProductList,
     FilterSection,
-    AddProduct,AppBarVue
-  },
+    AddProduct,
+    AppBarVue,
+    BottomNavigation
+},
   methods: {
     ...mapMutations('home', ['updateShowProducts']),
     ...mapActions('home',
@@ -172,10 +177,10 @@ export default {
 
 
      
-      if(!this.isLoading){
+      if(!this.isLoading && this.getProducts.length>0 && this.getProducts.length%15===0){
       let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;
       if (bottomOfWindow) {
-        if(this.getProducts<=15)
+        if(this.getProducts.length<=15)
           this.from = 0 ;
 
         this.from += this.count ;

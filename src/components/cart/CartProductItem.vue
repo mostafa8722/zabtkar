@@ -11,7 +11,6 @@
     <div class="d-flex flex-row justify-end px-2">
       <p class="line-clamp" dir="ltr" style="line-height: 20px;">
         <span class="cart-product-item__title opensans-regular">کالا با لینک خارجی </span>
-        <span class="cart-product-item__brand bold-font mx-2">{{  `(${item.color})`}}</span>
       </p>
       <v-list-item-avatar
         class="rounded-lg"
@@ -23,7 +22,17 @@
         <v-img contain src="/img/paloot-logo.5169ef60.png" ></v-img>
       </v-list-item-avatar>
     </div>
-    
+    <v-chip
+        class="regular-font mx-3"
+        label
+        text-color="white"
+       
+        color="secondary"
+      >
+        رنگ: {{  item.color}}
+      </v-chip>
+
+     
 
     <div class="d-flex flex-row flex-nowrap align-center justify-space-around mt-sm-3">
       <CartProductSizePicker  :item="item" :variant="item.variant" @update:variant="onVariantUpdate"/>

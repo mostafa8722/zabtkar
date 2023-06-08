@@ -350,11 +350,11 @@ export default {
       let query = {};
         if(value==3){
           query = {
-          cart : "add"
+          cart : "insert"
         };
         }else if(value==2){
           query = {
-          favorite : "add"
+          favorite : "insert"
         };
         }
         this.$router.replace({

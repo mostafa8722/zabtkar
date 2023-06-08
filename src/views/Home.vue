@@ -162,7 +162,7 @@ return {
   },
   mounted() {
   
-    if (this.$route.query.brand) {
+    if (this.$route.query.tbrand) {
       this.fetchProductsByBrandId(this.$route.query.brand)
     }
 
@@ -171,6 +171,8 @@ return {
     }
     else if (this.$route.query.favorite) {
       this.setSelectedBottomNavigationItem(2)
+    }else if (this.$route.query.profile) {
+      this.setSelectedBottomNavigationItem(1)
     }else {
       this.setSelectedBottomNavigationItem(4)
     }
@@ -213,6 +215,7 @@ return {
   left: -5px;
   bottom: 80px;
   padding: 0;
+  align-items: center;
 }
 
 .contact-us__icon:hover {

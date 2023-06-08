@@ -36,6 +36,7 @@ const mutations = {
       link: payload.link,
       color: payload.color,
       variant: payload.variant,
+      
       count: 1,
       external:true,
       id:new Date().getTime()

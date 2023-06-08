@@ -39,6 +39,26 @@ export default {
   methods: {
     ...mapMutations('home', ['updateShowProducts', 'updateShowSearchedBrands']),
     onBottomNavigationItemClick(index) {
+  
+      let query = {};
+        if(index==1){
+          query = {
+          cart : "insert"
+        };
+        }else if(index==2){
+          query = {
+          favorite : "insert"
+        };
+        }
+        else if(index==3){
+          query = {
+          profile : "insert"
+        };
+        }
+        this.$router.replace({
+        name: "Main",
+        query 
+      });
       if (index == 0) {
         this.updateShowProducts(false)
         this.updateShowSearchedBrands(false)
