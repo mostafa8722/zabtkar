@@ -34,11 +34,18 @@
         :cols="$vuetify.breakpoint.width > 600?8:12"
        
       >
-        <v-responsive >
+        <v-responsive  >
          
         
           <ProductList />
         </v-responsive>
+        <div v-if="isLoading && getProducts.length===0  " class="mt-3 d-flex flex-row   ">
+      <v-progress-circular
+        indeterminate
+        color="primary"
+        class="mx-auto"
+      ></v-progress-circular>
+    </div>
       </v-col>
 
       <v-col
@@ -54,7 +61,7 @@
       </v-col>
     </v-row>
    
-    <div v-if="isLoading" class="mt-3 d-flex flex-row   ">
+    <div v-if="isLoading && getProducts.length>0 && getProducts.length%15==0 " class="mt-3 d-flex flex-row   ">
       <v-progress-circular
         indeterminate
         color="primary"
@@ -185,6 +192,7 @@ export default {
 
         this.from += this.count ;
          
+        console.log("dddd09",this.getFilter.groupIds)
       const data = {
      
         from:this.from,
@@ -285,7 +293,7 @@ export default {
   },
   getFilter(new_val,old_val){
    
-console.log("ttt000000",new_val)
+console.log("dddddd",new_val.groupIds)
  }
 }
 </script>

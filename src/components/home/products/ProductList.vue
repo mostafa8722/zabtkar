@@ -72,7 +72,7 @@ export default {
     onScroll() {
       let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;
       if (bottomOfWindow) {
-        this.fetchProductsByGroupId(this.$route.query.group)
+       // this.fetchProductsByGroupId(this.$route.query.group)
       }
     }
   },

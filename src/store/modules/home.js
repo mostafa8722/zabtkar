@@ -222,7 +222,7 @@ const actions = {
     const priceMax = getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0;
   
     
-    console.log("dddd",getters.getFilter.priceMin)
+    console.log("dddd0",getters.getFilter.groupIds)
     const data = {
       name: searchInput,
       from,

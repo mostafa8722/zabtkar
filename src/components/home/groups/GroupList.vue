@@ -41,7 +41,12 @@ export default {
     priceMax : 0,
 
      });
+
+    
+ 
+     if(this.$route.name==="Products")
      this.setSearchInput(data);
+     
       this.$router.push({ path: '/products', query: { groupIds : [item.id] } })
    
     }
