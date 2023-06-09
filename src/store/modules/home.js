@@ -2,6 +2,7 @@ import axios from '../../api';
 
 const state = () => ({
   loading: false,
+  loadingProducts: false,
   groups: [],
   brands: [],
   brandsLoading: false,
@@ -15,6 +16,8 @@ const state = () => ({
   searchQuery : "",
   filter:{
     name :"",
+    from:0,
+    count:15,
     groupIds:[],
     brands : [],
     variants : [],
@@ -27,6 +30,9 @@ const state = () => ({
 const mutations = {
   updateLoading(state, payload) {
     state.loading = payload;
+  },
+  updateLoadingProducts(state, payload) {
+    state.loadingProducts = payload;
   },
   UpdateSearchQuery(state, payload) {
     state.searchQuery = payload;
@@ -211,10 +217,11 @@ const actions = {
   },
 
   setSearchInput({ commit, getters }, search) {
+    commit('updateLoadingProducts', true);
 
     const searchInput = getters.getFilter.name;
-    const from  = search.from;
-    const count =  search.count;
+    const from  = getters.getFilter.from;
+    const count =  getters.getFilter.count;
     const groupIds = getters.getFilter.groupIds? getters.getFilter.groupIds:[];
     const brands = getters.getFilter.brands?getters.getFilter.brands:[];
     const variants = getters.getFilter.variants?getters.getFilter.variants:[];
@@ -222,6 +229,7 @@ const actions = {
     const priceMax = getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0;
   
     
+    console.log("dddd0",getters.isLoadingProducts)
     console.log("dddd0",getters.getFilter.groupIds)
     const data = {
       name: searchInput,
@@ -243,15 +251,17 @@ const actions = {
       .post(`/Store/SearchProducts`, data)
       .then((response) => {
    
-      
+        console.log("dddd0response",response.data.data)
         commit('updateProducts', response.data.data);
       })
       .catch((error) => {
-       
+        console.log("dddd0error",error.message)
+        commit('clearProducts', []);
         commit('clearProducts', []);
       })
       .finally(() => {
         commit('UPDATE_SEARCHING', false);
+        commit('updateLoadingProducts', false);
       });
   },
 
@@ -332,6 +342,9 @@ const actions = {
 const getters = {
   isLoading(state) {
     return state.loading;
+  },
+  isLoadingProducts(state) {
+    return state.loadingProducts;
   },
   getGroups(state) {
     return state.groups;

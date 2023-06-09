@@ -26,12 +26,7 @@ export default {
     onGroupItemSelect(item) {
      
 
-        const data = {
-       
-       from:0,
-       count : 15,
-     
-     }
+   
      this.setFilter({
       name :"",
     groupIds:[item.id],
@@ -39,13 +34,15 @@ export default {
     variants : [],
     priceMin:0,
     priceMax : 0,
+    from : 0,
 
+      count : 15
      });
 
     
- 
+    
      if(this.$route.name==="Products")
-     this.setSearchInput(data);
+     this.setSearchInput();
      
       this.$router.push({ path: '/products', query: { groupIds : [item.id] } })
    

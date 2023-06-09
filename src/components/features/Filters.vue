@@ -42,10 +42,7 @@
       FilterList
     
     },
-    mounted(){
-      this.fetchBrands({from:0,count:10});
-      this.getVariants2();
-    },
+
     data() {
       return {
         isActive: false,
@@ -57,20 +54,19 @@
     },
     methods: {
       ...mapActions("price", ["convertLirToToman"]),
-      ...mapActions('home', ['fetchBrands', 'fetchProductsByGroupId','setSearchInput']),
+      ...mapActions('home', ['fetchBrands', 'fetchProductsByGroupId','setSearchInput','setFilter']),
       ...mapActions('bookmark', ['addBookmark', 'deleteBookmark',]),
      
       handleFilters(){
 
 
-        const data = {
-       
-       from:0,
-       count : 15,
-     
-     }
+     this.getFilter.from = 0 ;
+         
+    
+   
+     this.setFilter(this.getFilter);
 
-     this.setSearchInput(data);
+     this.setSearchInput();
       },
   
     

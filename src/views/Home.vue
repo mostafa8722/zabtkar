@@ -179,7 +179,7 @@ return {
   },
   created() {
 
-    window.addEventListener('scroll', this.onScroll);
+    //window.addEventListener('scroll', this.onScroll);
     window.addEventListener('popstate', this.handleBackButton)
   },
   destroyed() {

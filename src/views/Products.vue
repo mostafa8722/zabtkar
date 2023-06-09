@@ -4,15 +4,16 @@
     <AppBarVue  />
    
     <GroupList />
-    <div v-if="isLoading || brandsLoading" class="mt-3 d-flex flex-row   ">
+    
+   
+    <div v-if="isLoadingProducts && getProducts.length>0 && getProducts.length%15==0 " class="mt-3 d-flex flex-row   ">
       <v-progress-circular
         indeterminate
         color="primary"
         class="mx-auto"
       ></v-progress-circular>
     </div>
-   
- 
+
    
     <v-row dense class="d-flex mr-3 ml-3 ">
      
@@ -39,7 +40,7 @@
         
           <ProductList />
         </v-responsive>
-        <div v-if="isLoading && getProducts.length===0  " class="mt-3 d-flex flex-row   ">
+        <div v-if="isLoadingProducts && getProducts.length===0  " class="mt-3 d-flex flex-row   ">
       <v-progress-circular
         indeterminate
         color="primary"
@@ -61,13 +62,8 @@
       </v-col>
     </v-row>
    
-    <div v-if="isLoading && getProducts.length>0 && getProducts.length%15==0 " class="mt-3 d-flex flex-row   ">
-      <v-progress-circular
-        indeterminate
-        color="primary"
-        class="mx-auto"
-      ></v-progress-circular>
-    </div>
+
+    
       <v-dialog
       v-model="openFilter"
       overlay-opacity="0.9"
@@ -180,31 +176,38 @@ export default {
       
       
     },
-    onScroll() {
+   async onScroll() {
+      console.log("ddd","loading1",this.ti)
 
-
-     
-      if(!this.isLoading && this.getProducts.length>0 && this.getProducts.length%15===0){
+      if(!this.timeOutScroll)
+       this.timeOutScroll =setTimeout(() => {
+        console.log("ddd","loading1")
+        if(!this.isLoadingProducts && this.getProducts.length>0 && this.getProducts.length%15===0){
+          console.log("ddd","loading2")
       let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;
       if (bottomOfWindow) {
-        if(this.getProducts.length<=15)
-          this.from = 0 ;
+        console.log("ddd","loading3",this.getProducts.length)
+        // if(this.getProducts.length<=15)
+        //   this.from = 0 ;
 
-        this.from += this.count ;
+        this.getFilter.from += this.getFilter.count ;
          
-        console.log("dddd09",this.getFilter.groupIds)
-      const data = {
-     
-        from:this.from,
-        count : this.count
-      }
-      this.setSearchInput(data);
+    
+   
+    this.setFilter(this.getFilter);
+    
+      this.setSearchInput();
       }
     }
+    clearTimeout(this.timeOutScroll);
+    this.timeOutScroll = null;
+      }, 600);
+     
+     
     }
   },
   computed: {
-    ...mapGetters('home', ['isLoading', 'showProducts', 'brandsLoading',"searchQuery","getFilter","getProducts"]),
+    ...mapGetters('home', ['isLoading','isLoadingProducts', 'showProducts', 'brandsLoading',"searchQuery","getFilter","getProducts"]),
     
   },
   data() {
@@ -214,6 +217,7 @@ export default {
         pagination :1,
         from : 0,
         count : 15,
+        timeOutScroll : null,
        
      
       }
@@ -221,8 +225,8 @@ export default {
   
     async mounted() {
   this.clearSearchedProducts();
-      this.from = 0;
-      this.count = 15;
+      let from = 0;
+      let count = 15;
   
       let groupIds = [];
       let brands = [];
@@ -250,19 +254,14 @@ export default {
       if(this.$route.query.priceMax)
       priceMax  = this.$route.query.priceMax; 
 
-      const filter  = {groupIds,name,brands,variants,priceMax,priceMin}
+      const filter  = {from,count,groupIds,name,brands,variants,priceMax,priceMin}
 
 
 
       await this.setFilter(filter);
-      const data = {
-       
-        from:this.from,
-        count : this.count,
-      
-      }
+    
  
-      this.setSearchInput(data);
+      this.setSearchInput();
 
 
     
@@ -276,19 +275,13 @@ export default {
     window.removeEventListener('popstate', this.handleBackButton)
   },
   watch:{
-    searchQuery(new_val,old_val){
+    async searchQuery(new_val,old_val){
    
-      this.from = 0;
-      this.count = 15;
-      
-   
-      const data = {
      
-        from:this.from,
-        count : this.count,
-      
-      }
-      this.setSearchInput(data);
+      this.getFilter.from =0 ;
+   
+      await this.setFilter(this.getFilter);
+      this.setSearchInput();
     }
   },
   getFilter(new_val,old_val){

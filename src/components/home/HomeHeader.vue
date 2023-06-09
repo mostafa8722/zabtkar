@@ -128,12 +128,7 @@ export default {
     },
 
     onSearchInput(value) {
-      clearTimeout(this.debounce)
-
-      this.debounce = setTimeout(() => {
-        this.search = value;
-        this.setSearchInput(value);
-      }, 500)
+   
     },
     handleEnter(){
       this.$router.replace({
