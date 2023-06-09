@@ -40,13 +40,7 @@
         
           <ProductList />
         </v-responsive>
-        <div v-if="isLoadingProducts && getProducts.length===0  " class="mt-3 d-flex flex-row   ">
-      <v-progress-circular
-        indeterminate
-        color="primary"
-        class="mx-auto"
-      ></v-progress-circular>
-    </div>
+    
       </v-col>
 
       <v-col
@@ -127,7 +121,13 @@
       <v-img src="@/assets/instagram.png" class="br-50" width="35px" height="35px"></v-img>
     </a>
    </div>
-   
+   <div v-if="isLoadingProducts && getProducts.length>0 &&  getProducts.length%15==0" class="mt-3 d-flex flex-row   ">
+      <v-progress-circular
+        indeterminate
+        color="primary"
+        class="mx-auto"
+      ></v-progress-circular>
+    </div>
 
   
   </div>
@@ -177,11 +177,7 @@ export default {
       
     },
    async onScroll() {
-      console.log("ddd","loading1",this.ti)
-
-      if(!this.timeOutScroll)
-       this.timeOutScroll =setTimeout(() => {
-        console.log("ddd","loading1")
+   
         if(!this.isLoadingProducts && this.getProducts.length>0 && this.getProducts.length%15===0){
           console.log("ddd","loading2")
       let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;
@@ -199,9 +195,7 @@ export default {
       this.setSearchInput();
       }
     }
-    clearTimeout(this.timeOutScroll);
-    this.timeOutScroll = null;
-      }, 600);
+ 
      
      
     }

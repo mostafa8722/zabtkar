@@ -40,9 +40,7 @@
         <div v-if="!isSearching && getSearchedProducts.length > 0" class="d-flex flex-row justify-center">
           <p class="bold-font" style="color: var(--primary-color); cursor: pointer;" @click="showSearchedProducts(); search = '';">نمایش بیشتر</p>
         </div>
-        <div v-if="!isSearching && getSearchedProducts.length == 0 && getSearchInput" class="d-flex flex-row justify-center">
-          <p class="bold-font">کالایی یافت نشد</p>
-        </div>
+     
 
         <v-divider v-if="!isSearching"/>
 
