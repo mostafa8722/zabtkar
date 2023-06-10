@@ -240,20 +240,20 @@ const actions = {
     // const priceMax = getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0;
   
     
-    console.log("dddd0",getters.isLoadingProducts)
-    console.log("dddd0",getters.getFilter.groupIds)
-    const data = {
-      name: searchInput,
-      from,
-     count,
-     groupIds,brands,variants,priceMin,
+    // console.log("dddd0",getters.isLoadingProducts)
+    // console.log("dddd0",getters.getFilter.groupIds)
+    // const data = {
+    //   name: searchInput,
+    //   from,
+    //  count,
+    //  groupIds,brands,variants,priceMin,
 
-    }
-    if(from==0)
-    commit('clearProducts', []);
+    // }
+    // if(from==0)
+    // commit('clearProducts', []);
     
-    if(priceMax!==0)
-    data.priceMax = priceMax;
+    // if(priceMax!==0)
+    // data.priceMax = priceMax;
 
     
 
