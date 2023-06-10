@@ -201,7 +201,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('home', ['isLoading','isLoadingProducts', 'showProducts', 'brandsLoading',"searchQuery","getFilter","getProducts"]),
+    ...mapGetters('home', ['isLoading','isLoadingProducts', 
+    'showProducts', 'brandsLoading',"searchQuery","getFilter",
+    "getProducts",
+    'getFilterType'
+  ]),
     
   },
   data() {
@@ -222,37 +226,37 @@ export default {
       let from = 0;
       let count = 15;
   
-      let groupIds = [];
-      let brands = [];
+      let group = 0;
+      let brand = 0;
       let variants = [];
       let name =   "";
       let priceMin =  0;
       let priceMax =   0;
 
       if(this.$route.query.groupIds)
-      groupIds.push(parseInt(this.$route.query.groupIds))
+      group=(parseInt(this.$route.query.groupIds))
 
       if(this.$route.query.search)
       name  = this.$route.query.search; 
 
       if(this.$route.query.brands)
-      brands .push( parseInt(this.$route.query.brands)); 
+      brand = parseInt(this.$route.query.brands); 
 
-      if(this.$route.query.variants)
-      variants .push( this.$route.query.variants); 
+      // if(this.$route.query.variants)
+      // variants .push( this.$route.query.variants); 
 
-      if(this.$route.query.priceMin)
-      priceMin  = this.$route.query.priceMin; 
-
-
-      if(this.$route.query.priceMax)
-      priceMax  = this.$route.query.priceMax; 
-
-      const filter  = {from,count,groupIds,name,brands,variants,priceMax,priceMin}
+      // if(this.$route.query.priceMin)
+      // priceMin  = this.$route.query.priceMin; 
 
 
+      // if(this.$route.query.priceMax)
+      // priceMax  = this.$route.query.priceMax; 
 
-      await this.setFilter(filter);
+      const data  = {from,count,group,name,brand,variants,priceMax,priceMin}
+
+
+
+   
     
  
       this.setSearchInput();
