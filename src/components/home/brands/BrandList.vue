@@ -36,15 +36,12 @@ export default {
   },
 
   methods: {
-    ...mapActions('home', ['fetchBrands', 'fetchProductsByBrandId']),
+    ...mapActions('home', ['fetchBrands', 'fetchProductsByBrandId','setFilterType']),
     onBrandItemSelect(brand) {
-      this.$router.push({
-        name: 'Main',
-        query: {
-          brand: brand.id
-        }
-      })
-      this.fetchProductsByBrandId(brand.id)
+    
+      this.setFilterType('brand');
+      this.$router.push({ path: '/products', query: { brands : [brand.id] } })
+    //  this.fetchProductsByBrandId(brand.id)
     },
     onScroll() {
       // let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;

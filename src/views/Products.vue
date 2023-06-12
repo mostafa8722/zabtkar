@@ -259,7 +259,7 @@ export default {
    
     
  
-      this.setSearchInput();
+      this.setSearchInput(data);
 
 
     
@@ -275,11 +275,8 @@ export default {
   watch:{
     async searchQuery(new_val,old_val){
    
-     
-      this.getFilter.from =0 ;
-   
-      await this.setFilter(this.getFilter);
-      this.setSearchInput();
+      let data ={name:new_val};
+      this.setSearchInput(data);
     }
   },
   getFilter(new_val,old_val){
