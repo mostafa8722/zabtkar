@@ -14,6 +14,7 @@ const state = () => ({
   showSearchedBrands: false,
   searchedBrands: [],
   searchQuery : "",
+  filterType : "keyword",
   filter:{
     name :"",
     from:0,
@@ -41,6 +42,10 @@ const mutations = {
 
   updateBrandsLoading(state, payload) {
     state.brandsLoading = payload;
+  },
+
+  updateFilterType(state, payload) {
+    state.filterType = payload;
   },
 
   updateGroups(state, payload) {
@@ -133,9 +138,15 @@ const actions = {
     commit('UpdateSearchQuery', search);
 
   },
+  setFilterType({ commit, getters }, filter ){
+   
+   
+    commit('updateFilterType', filter);
+
+  },
   setFilter({ commit, getters }, filter ){
    
-    console.log("tttttf",filter)
+
     commit('UpdateFilter', filter);
 
   },
@@ -216,7 +227,70 @@ const actions = {
       });
   },
 
-  setSearchInput({ commit, getters }, search) {
+  setSearchInput({ commit, getters }, data) {
+    commit('updateLoadingProducts', true);
+
+    // const searchInput = getters.getFilter.name;
+    // const from  = getters.getFilter.from;
+    // const count =  getters.getFilter.count;
+    // const groupIds = getters.getFilter.groupIds? getters.getFilter.groupIds:[];
+    // const brands = getters.getFilter.brands?getters.getFilter.brands:[];
+    // const variants = getters.getFilter.variants?getters.getFilter.variants:[];
+    // const priceMin = getters.getFilter.priceMin?getters.getFilter.priceMin:0;
+    // const priceMax = getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0;
+  
+    
+    // console.log("dddd0",getters.isLoadingProducts)
+    // console.log("dddd0",getters.getFilter.groupIds)
+    // const data = {
+    //   name: searchInput,
+    //   from,
+    //  count,
+    //  groupIds,brands,variants,priceMin,
+
+    // }
+    // if(from==0)
+    // commit('clearProducts', []);
+    
+    // if(priceMax!==0)
+    // data.priceMax = priceMax;
+
+    
+
+
+  let url  = "/Search/ByKeyword/"+data.name;
+    if(getFilterType==="brand")
+    url  = "/Search/ByBrand/"+data.brand;
+    else if(getFilterType==="group")
+    url  = "/Search/ByGroup/"+data.group;
+   
+    console.log("aaa3",data)
+    axios
+      .get(url)
+      .then((response) => {
+   
+        console.log("dddd0response",response.data.data)
+        let data =   response.data.data;
+        let metaData = data.metaData;
+        commit('updateProducts', data.products);
+
+        getters.getFilter.name = metaData?.name ? metaData?.name:  getters.getFilter.name;
+        getters.getFilter.variants = metaData?.variants ? metaData?.variants:  getters.getFilter.variants;
+        getters.getFilter.groupIds = metaData?.types ? metaData?.types:  getters.getFilter.groupIds;
+        commit('UpdateFilter', getters.getFilter);
+      })
+      .catch((error) => {
+        console.log("dddd0error",error.message)
+        commit('clearProducts', []);
+        commit('clearProducts', []);
+      })
+      .finally(() => {
+        commit('UPDATE_SEARCHING', false);
+        commit('updateLoadingProducts', false);
+      });
+  },
+
+  setSearchFilter({ commit, getters }, search) {
     commit('updateLoadingProducts', true);
 
     const searchInput = getters.getFilter.name;
@@ -386,6 +460,7 @@ const getters = {
   getShowSearchedBrands: (state) => state.showSearchedBrands,
   searchQuery: (state) => state.searchQuery,
   getFilter: (state) => state.filter,
+  getFilterType: (state) => state.filterType,
 };
 
 export default {

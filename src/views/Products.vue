@@ -40,13 +40,7 @@
         
           <ProductList />
         </v-responsive>
-        <div v-if="isLoadingProducts && getProducts.length===0  " class="mt-3 d-flex flex-row   ">
-      <v-progress-circular
-        indeterminate
-        color="primary"
-        class="mx-auto"
-      ></v-progress-circular>
-    </div>
+    
       </v-col>
 
       <v-col
@@ -127,7 +121,13 @@
       <v-img src="@/assets/instagram.png" class="br-50" width="35px" height="35px"></v-img>
     </a>
    </div>
-   
+   <div v-if="isLoadingProducts && getProducts.length>0 &&  getProducts.length%15==0" class="mt-3 d-flex flex-row   ">
+      <v-progress-circular
+        indeterminate
+        color="primary"
+        class="mx-auto"
+      ></v-progress-circular>
+    </div>
 
   
   </div>
@@ -177,11 +177,7 @@ export default {
       
     },
    async onScroll() {
-      console.log("ddd","loading1",this.ti)
-
-      if(!this.timeOutScroll)
-       this.timeOutScroll =setTimeout(() => {
-        console.log("ddd","loading1")
+   
         if(!this.isLoadingProducts && this.getProducts.length>0 && this.getProducts.length%15===0){
           console.log("ddd","loading2")
       let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;
@@ -199,15 +195,17 @@ export default {
       this.setSearchInput();
       }
     }
-    clearTimeout(this.timeOutScroll);
-    this.timeOutScroll = null;
-      }, 600);
+ 
      
      
     }
   },
   computed: {
-    ...mapGetters('home', ['isLoading','isLoadingProducts', 'showProducts', 'brandsLoading',"searchQuery","getFilter","getProducts"]),
+    ...mapGetters('home', ['isLoading','isLoadingProducts', 
+    'showProducts', 'brandsLoading',"searchQuery","getFilter",
+    "getProducts",
+    'getFilterType'
+  ]),
     
   },
   data() {
@@ -228,37 +226,37 @@ export default {
       let from = 0;
       let count = 15;
   
-      let groupIds = [];
-      let brands = [];
+      let group = 0;
+      let brand = 0;
       let variants = [];
       let name =   "";
       let priceMin =  0;
       let priceMax =   0;
 
       if(this.$route.query.groupIds)
-      groupIds.push(parseInt(this.$route.query.groupIds))
+      group=(parseInt(this.$route.query.groupIds))
 
       if(this.$route.query.search)
       name  = this.$route.query.search; 
 
       if(this.$route.query.brands)
-      brands .push( parseInt(this.$route.query.brands)); 
+      brand = parseInt(this.$route.query.brands); 
 
-      if(this.$route.query.variants)
-      variants .push( this.$route.query.variants); 
+      // if(this.$route.query.variants)
+      // variants .push( this.$route.query.variants); 
 
-      if(this.$route.query.priceMin)
-      priceMin  = this.$route.query.priceMin; 
-
-
-      if(this.$route.query.priceMax)
-      priceMax  = this.$route.query.priceMax; 
-
-      const filter  = {from,count,groupIds,name,brands,variants,priceMax,priceMin}
+      // if(this.$route.query.priceMin)
+      // priceMin  = this.$route.query.priceMin; 
 
 
+      // if(this.$route.query.priceMax)
+      // priceMax  = this.$route.query.priceMax; 
 
-      await this.setFilter(filter);
+      const data  = {from,count,group,name,brand,variants,priceMax,priceMin}
+
+
+
+   
     
  
       this.setSearchInput();
