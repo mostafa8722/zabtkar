@@ -14,18 +14,18 @@
         
     </h3>
        
-    <v-btn @click="handleFilters" class=" regular-font mt-2 mr-5 ml-5 btn-filter mb-4 white--text"   height="50" variant='text' color="#FD562E" > اعمال </v-btn>
-    
-    
+
         <div class="line-divider mt-4"></div>
-        <FilterList :items="getInitialFilter.groups" title=" کالا" :isOpen="false" type="group"  />
+        <FilterList :items="getInitialFilter.groups" title=" گروه" :isOpen="false" type="group"  />
         <FilterList :items="getInitialFilter.brands" title="برند" :isOpen="false" type="brand"  />
         <FilterList :items="getInitialFilter.variants" title="سایز" :isOpen="false" type="variant"  />
         <FilterList :items="[1,2,3]" title=" قیمت (لیر)" :isOpen="false" type="price"  />
        
  
         <div></div>
-       
+        <v-btn @click="handleFilters" class=" regular-font mt-2 mr-5 ml-5 btn-filter mb-4 white--text"   height="50" variant='text' color="#FD562E" > اعمال </v-btn>
+    
+    
       </v-card>
   </template>
   
@@ -184,8 +184,9 @@ console.log("getProducts3",uniqueAuthors)
     font-size: 15px;
   }
   .btn-filter{
-
-
+    position: fixed;
+    bottom: 0px;
+    right: 60px;
 
   }
   </style>

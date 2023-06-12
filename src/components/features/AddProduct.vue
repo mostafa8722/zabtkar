@@ -266,7 +266,7 @@ padding: 5px;
     font-size: 15px;
   }
   .add-product{
-    border-radius: 15px;
+   
   }
  
   </style>
