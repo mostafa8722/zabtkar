@@ -16,8 +16,8 @@
        
 
         <div class="line-divider mt-4"></div>
-        <FilterList :items="getInitialFilter.groups" title=" گروه" :isOpen="false" type="group"  />
-        <FilterList :items="getInitialFilter.brands" title="برند" :isOpen="false" type="brand"  />
+        <FilterList v-if="!$route.query.groupIds" :items="getInitialFilter.groups" title=" گروه" :isOpen="false" type="group"  />
+        <FilterList v-if="!$route.query.brands" :items="getInitialFilter.brands" title="برند" :isOpen="false" type="brand"  />
         <FilterList :items="getInitialFilter.variants" title="سایز" :isOpen="false" type="variant"  />
         <FilterList :items="[1,2,3]" title=" قیمت (لیر)" :isOpen="false" type="price"  />
        
