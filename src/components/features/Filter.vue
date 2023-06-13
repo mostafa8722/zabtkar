@@ -4,7 +4,7 @@
       >
 
          <div @click="handleClick" class="section-title cursor-pointer  pr-3 pl-3  d-flex jusitfy-between">
-          <h4 class="regular-font  text-white "
+          <h4 class="regular-font  text-999"
           :class="{'text-orange':isOpen }"
           >  {{ title }}</h4>
 
@@ -135,8 +135,10 @@ import { mapActions, mapGetters } from "vuex";
         this.isOpen =  !this.isOpen;
       },
       getTitle(item){
-        if(this.type!=="price"  )
+        if(this.type==="group" || this.type==="brand"  )
         return item.name;
+        else  if(this.type==="variant"  )
+        return item;
         else
         return "a";
       },
@@ -153,9 +155,9 @@ import { mapActions, mapGetters } from "vuex";
       }else  if(this.type==="brand"  ){
        const index = brands.findIndex((brand)=>brand==item.id);
        index<=-1 && event ? brands.push(item.id) : brands.splice(index,1) ;
-     }else  if(this.type==="size"  ){
-       const index = variants.findIndex((variant)=>variant==item.id);
-       index<=-1 && event ? variants.push(item.id) : variants.splice(index,1) ;
+     }else  if(this.type==="variant"  ){
+       const index = variants.findIndex((variant)=>variant==item);
+       index<=-1 && event ? variants.push(item) : variants.splice(index,1) ;
      }
       this.getFilter.groupIds = groupIds;
       this.getFilter.brands = brands;
@@ -270,5 +272,8 @@ import { mapActions, mapGetters } from "vuex";
   }
   .cursor-pointer {
     cursor: pointer;
+  }
+  .text-999{
+    color:#999;
   }
   </style>

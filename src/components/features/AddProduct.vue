@@ -24,14 +24,11 @@
       </template>
     </v-snackbar>
 
-        <h3 class="medium-font font-15 justify-center d-flex mt-3"> افزودن کالا به سبد خرید از طریق لینک</h3>
-        <div class="filter-header-box mt-3 d-flex mr-2 ml-2">
-          <h5 class="regular-font font-11 text-orange" >   کاربر گرامی به دلیل  تنوع بالای برندها ، امکان لیست کردن     </h5>
-          <h5 class="regular-font  font-11 mt-2 text-orange" >  همه محصولات در این وبسایت وجود ندارد      </h5>
-          <h5 class="regular-font font-11   mt-4 text-orange" >     لطفا جهت سفارش کالای لیست نشده در وبسایت    </h5>
-          <h5 class="regular-font font-11  mt-2 text-orange" >          فرم زیر را پر کنید تا به سبدتان اضافه شود.     </h5>
-          
-        </div>
+        <h3 class="medium-font font-15 justify-center d-flex mt-3"
+        :data-tooltip="content"
+        
+        > افزودن کالا لیست نشده به سایت </h3>
+       
 
         <div class="line-divider mt-4"></div>
     
@@ -47,7 +44,7 @@
           dense
           class="regular-font mt-3 "
           label="لینک کالا"
-          placeholder="  لینک کالا "
+        
           background-color="white"
           outlined
           v-model="link"
@@ -57,9 +54,9 @@
             <v-text-field
           dense
           v-model="variant"
-          class="regular-font mt-3 "
+          class="regular-font  "
           label=" سایز"
-          placeholder="   سایز "
+        
           background-color="white"
           outlined
           type="text"
@@ -67,9 +64,9 @@
 
             <v-text-field
           dense
-          class="regular-font mt-3 "
+          class="regular-font  "
           label=" رنگ"
-          placeholder="   رنگ "
+        
           background-color="white"
           outlined
           v-model="color"
@@ -78,9 +75,9 @@
 
             <v-text-field
           dense
-          class="regular-font mt-3 "
+          class="regular-font  "
           label=" قیمت (به لیر)"
-          placeholder="   قیمت (به لیر) "
+   
           background-color="white"
           outlined
           v-model="price"
@@ -99,8 +96,28 @@
   
   
   <script>
+
  // import Price from '@/components/base/Price.vue'
   import { mapActions, mapGetters } from "vuex";
+  var tooltip = require('tooltip')
+ 
+
+var config  = {
+  showDelay: 100,
+  style: {
+    padding: 5,
+    color:'#FD562E',
+    left:"0px",
+    fontFamily: 'Regular',
+    backgroundColor: "#FFE5C6",
+    position:"absolute",
+    with:"200",
+    height:"auto",
+    zIndex:1000,
+    direction:"rtl"
+  }
+}
+tooltip(config)
   
   export default {
     name: "Filter",
@@ -128,7 +145,12 @@
       snackbarMessage: "",
       snackbarButton: false,
       snackbarTimeout: 2000,
+      content : " کاربر گرامی به دلیل  تنوع بالای برندها ، امکان لیست کردن"+" "
+      +"همه محصولات در این وبسایت وجود ندارد"
+      +" لطفا جهت سفارش کالای لیست نشده در وبسایت"+" "
+      +"فرم زیر را پر کنید تا به سبدتان اضافه شود"
       }
+    
     },
     methods: {
       ...mapActions("price", ["convertLirToToman"]),
@@ -212,10 +234,10 @@
   <style lang="scss" scoped>
 
 .box-filter{
-  background-color: #878787;
-  border-radius: 20px;
-
-  margin-left: 40px!important;
+  background-color: #fff;
+  
+padding: 5px;
+  margin-left: 30px!important;
 
 }
   .filter-header-box {
@@ -244,7 +266,7 @@
     font-size: 15px;
   }
   .add-product{
-    border-radius: 15px;
+   
   }
  
   </style>

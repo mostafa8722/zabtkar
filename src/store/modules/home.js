@@ -14,12 +14,24 @@ const state = () => ({
   showSearchedBrands: false,
   searchedBrands: [],
   searchQuery : "",
+  brandId : 0,
+  groupId : 0,
   filterType : "keyword",
   filter:{
     name :"",
     from:0,
     count:15,
     groupIds:[],
+    brands : [],
+    variants : [],
+    priceMin:0,
+    priceMax : 0,
+
+  },
+  initialFilter:{
+    name :"",
+   
+    types:[],
     brands : [],
     variants : [],
     priceMin:0,
@@ -45,6 +57,7 @@ const mutations = {
   },
 
   updateFilterType(state, payload) {
+
     state.filterType = payload;
   },
 
@@ -97,6 +110,21 @@ const mutations = {
  
     state.filter = payload;
   },
+  UpdateInitialFilter(state, payload) {
+
+ 
+    state.initialFilter = payload;
+  },
+  UpdateGroupId(state, payload) {
+
+ 
+    state.groupId = payload;
+  },
+  UpdateBrandId(state, payload) {
+
+ 
+    state.brandId = payload;
+  },
 };
 
 const actions = {
@@ -139,7 +167,7 @@ const actions = {
 
   },
   setFilterType({ commit, getters }, filter ){
-   
+
    
     commit('updateFilterType', filter);
 
@@ -148,6 +176,24 @@ const actions = {
    
 
     commit('UpdateFilter', filter);
+
+  },
+  setInitialFilter({ commit, getters }, filter ){
+   
+
+    commit('UpdateInitialFilter', filter);
+
+  },
+  setBrandId({ commit, getters }, id ){
+   
+
+    commit('UpdateBrandId', id);
+
+  },
+  setGroupId({ commit, getters }, id ){
+   
+
+    commit('UpdateGroupId', id);
 
   },
   fetchProductsByGroupId({ commit, getters }, data) {
@@ -258,13 +304,15 @@ const actions = {
     
 
 
+    const {getFilterType,getInitialFilter} = getters;
+
   let url  = "/Search/ByKeyword/"+data.name;
     if(getFilterType==="brand")
     url  = "/Search/ByBrand/"+data.brand;
     else if(getFilterType==="group")
     url  = "/Search/ByGroup/"+data.group;
    
-    console.log("aaa3",data)
+    console.log("aaa3",getFilterType)
     axios
       .get(url)
       .then((response) => {
@@ -274,10 +322,11 @@ const actions = {
         let metaData = data.metaData;
         commit('updateProducts', data.products);
 
-        getters.getFilter.name = metaData?.name ? metaData?.name:  getters.getFilter.name;
-        getters.getFilter.variants = metaData?.variants ? metaData?.variants:  getters.getFilter.variants;
-        getters.getFilter.groupIds = metaData?.types ? metaData?.types:  getters.getFilter.groupIds;
-        commit('UpdateFilter', getters.getFilter);
+        getInitialFilter.name = metaData?.name ? metaData?.name: getInitialFilter.name;
+       getInitialFilter.variants = metaData?.variants ? metaData?.variants:  getInitialFilter.variants;
+        getInitialFilter.types = metaData?.types ? metaData?.types:  getInitialFilter.types;
+        getInitialFilter.brands = metaData?.brands ? metaData?.brands:  getInitialFilter.brands;
+        commit('setInitialFilter', getInitialFilter);
       })
       .catch((error) => {
         console.log("dddd0error",error.message)
@@ -460,7 +509,10 @@ const getters = {
   getShowSearchedBrands: (state) => state.showSearchedBrands,
   searchQuery: (state) => state.searchQuery,
   getFilter: (state) => state.filter,
+  getInitialFilter: (state) => state.initialFilter,
   getFilterType: (state) => state.filterType,
+  getBrandId: (state) => state.brandId,
+  getGroupId: (state) => state.groupId,
 };
 
 export default {

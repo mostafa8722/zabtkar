@@ -1,24 +1,31 @@
 <template>
       <v-card   class="mx-auto d-flex flex-column  box-filter mt-5" >
-
-        <h3 class="medium-font font-15 justify-center d-flex mt-3"> فیلتر</h3>
-        <div class="filter-header-box mt-3 d-flex mr-3 ml-3">
-          <h5 class="regular-font font-13 text-orange" >برای دسترسی دقیق تر به  محصولات </h5>
-          <h5 class="regular-font font-13 mt-2 text-orange" >نتایج را از فرم زیر فیلتر کنید </h5>
+       
+       
+        <h3  class="medium-font font-15 justify-center d-flex mt-3"
+        
+     
+        >
+          <span  :data-tooltip="content" >
+            فیلتر
+          </span>
           
-        </div>
+          
+        
+    </h3>
+       
 
         <div class="line-divider mt-4"></div>
-        <FilterList :items="getGroups" title="گروه کالا" :isOpen="false" type="group"  />
-        <FilterList :items="getBrandList" title="برند" :isOpen="false" type="brand"  />
-        <FilterList :items="variants" title="سایز" :isOpen="false" type="size"  />
-        <FilterList :items="[1,2,3]" title="محدوده ی قیمت (لیر)" :isOpen="false" type="price"  />
+        <FilterList v-if="!$route.query.groupIds" :items="getInitialFilter.groups" title=" گروه" :isOpen="false" type="group"  />
+        <FilterList v-if="!$route.query.brands" :items="getInitialFilter.brands" title="برند" :isOpen="false" type="brand"  />
+        <FilterList :items="getInitialFilter.variants" title="سایز" :isOpen="false" type="variant"  />
+        <FilterList :items="[1,2,3]" title=" قیمت (لیر)" :isOpen="false" type="price"  />
        
-        <v-btn @click="handleFilters" class=" regular-font mt-15 mr-5 ml-5 mb-4 white--text"   height="50" variant='text' color="#FD562E" > اعمال </v-btn>
-    
-    
+ 
         <div></div>
-       
+        <v-btn @click="handleFilters" class=" regular-font mt-2 mr-5 ml-5 btn-filter mb-4 white--text"   height="50" variant='text' color="#FD562E" > اعمال </v-btn>
+    
+    
       </v-card>
   </template>
   
@@ -26,7 +33,28 @@
   <script>
  // import Price from '@/components/base/Price.vue'
   import { mapActions, mapGetters } from "vuex";
-  import FilterList from  "./Filter"
+  import FilterList from  "./Filter";
+  import Vue from 'vue'
+import VTooltip from 'v-tooltip';
+var tooltip = require('tooltip')
+ 
+
+var config  = {
+  showDelay: 100,
+  style: {
+    padding: 5,
+    color:'#FD562E',
+    left:"0px",
+    fontFamily: 'Regular',
+    backgroundColor: "#FFE5C6",
+    position:"absolute",
+    with:"200",
+    height:"auto",
+    zIndex:1000
+  }
+}
+tooltip(config)
+Vue.use(VTooltip)
   
   export default {
     name: "Filters",
@@ -49,6 +77,7 @@
         showOriginalName: true,
         showLirPrice: true,
         variants:[],
+        content: ' برای دسترسی دقیق تر به  محصولات ' +'نتایج را از فرم زیر فیلتر کنید ',
      
       }
     },
@@ -74,7 +103,8 @@
     computed: {
       ...mapGetters("price", ["getMultiplier"]),
       ...mapGetters('bookmark', ['isBookmarked']),
-      ...mapGetters('home', ['getGroups' ,'getBrands','getProducts','getBrandsCount', 'getSearchedBrands', 'getShowSearchedBrands','getFilter']),
+      ...mapGetters('home', ['getGroups' ,'getBrands','getProducts','getInitialFilter',
+      'getBrandsCount', 'getSearchedBrands', 'getShowSearchedBrands','getFilter']),
   
       getVariants() {
 
@@ -122,9 +152,10 @@ console.log("getProducts3",uniqueAuthors)
   <style lang="scss" scoped>
 
 .box-filter{
-  background-color: #878787;
-  height: 500px;
+  background-color: #fff;
+  height: 100vh;
    overflow-y: scroll;
+   position: relative;
 
 }
   .filter-header-box {
@@ -151,5 +182,11 @@ console.log("getProducts3",uniqueAuthors)
   }
   .font-15{
     font-size: 15px;
+  }
+  .btn-filter{
+    position: fixed;
+    bottom: 0px;
+    right: 60px;
+
   }
   </style>
