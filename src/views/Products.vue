@@ -5,14 +5,7 @@
    
     <GroupList />
     
-   
-    <div v-if="isLoadingProducts && getProducts.length>0 && getProducts.length%15==0 " class="mt-3 d-flex flex-row   ">
-      <v-progress-circular
-        indeterminate
-        color="primary"
-        class="mx-auto"
-      ></v-progress-circular>
-    </div>
+  
 
    
     <v-row dense class="d-flex mr-3 ml-3 ">
@@ -37,7 +30,14 @@
       >
         <v-responsive  >
          
-        
+         
+    <div v-if="isLoadingProducts && getProducts.length==0 && getProducts.length%15==0 " class="mt-15 d-flex flex-row   ">
+      <v-progress-circular
+        indeterminate
+        color="primary"
+        class="mx-auto"
+      ></v-progress-circular>
+    </div>
           <ProductList />
         </v-responsive>
     
@@ -159,7 +159,12 @@ export default {
   methods: {
     ...mapMutations('home', ['updateShowProducts']),
     ...mapActions('home',
-     ['fetchProductsByBrandId', 'fetchProductsByGroupId','setSearchInput','setFilter','clearSearchedProducts']),
+     ['fetchProductsByBrandId', 'fetchProductsByGroupId',
+     'setFilterType',
+     'setGroupId',
+     'setSearchQuery',
+     'setBrandId',
+     'setSearchInput','setFilter','clearSearchedProducts']),
     handleBackButton() {
       if (!this.$route.query.brand || this.$route.query.group) {
         if (this.showProducts) {
@@ -191,8 +196,14 @@ export default {
     
    
     this.setFilter(this.getFilter);
+    let data = {from: this.getFilter.from};
+ 
+    if(this.getFilterType==="filter")
+    this.setSearchFilter();
+    else 
+     this.setSearchInput(data);
     
-      this.setSearchInput();
+     
       }
     }
  
@@ -223,6 +234,17 @@ export default {
   
     async mounted() {
   this.clearSearchedProducts();
+
+  this.setFilter({
+    name :"",
+    from:0,
+    count:15,
+    groupIds:[],
+    brands : [],
+    variants : [],
+    priceMin:0,
+    priceMax : 0,
+  });
       let from = 0;
       let count = 15;
   
@@ -233,14 +255,25 @@ export default {
       let priceMin =  0;
       let priceMax =   0;
 
-      if(this.$route.query.groupIds)
-      group=(parseInt(this.$route.query.groupIds))
 
-      if(this.$route.query.search)
+
+      if(this.$route.query.groupIds){
+        this.setFilterType('group');
+      this.setGroupId(this.$route.query.groupIds);
+      }
+
+
+      if(this.$route.query.search){
+        this.setFilterType('keyword');
+        this.setSearchQuery(this.$route.query.search);
+      }
       name  = this.$route.query.search; 
 
-      if(this.$route.query.brands)
-      brand = parseInt(this.$route.query.brands); 
+      if(this.$route.query.brands){
+        this.setFilterType('brand');
+      this.setBrandId(this.$route.query.brands);
+      }
+    
 
       // if(this.$route.query.variants)
       // variants .push( this.$route.query.variants); 

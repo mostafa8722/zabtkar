@@ -16,11 +16,14 @@
        
 
         <div class="line-divider mt-4"></div>
-        <FilterList v-if="!$route.query.groupIds" :items="getInitialFilter.groups" title=" گروه" :isOpen="false" type="group"  />
+        <div class="filter-sections">
+          <FilterList v-if="!$route.query.groupIds" :items="getInitialFilter.groups" title=" گروه" :isOpen="false" type="group"  />
         <FilterList v-if="!$route.query.brands" :items="getInitialFilter.brands" title="برند" :isOpen="false" type="brand"  />
         <FilterList :items="getInitialFilter.variants" title="سایز" :isOpen="false" type="variant"  />
         <FilterList :items="[1,2,3]" title=" قیمت (لیر)" :isOpen="false" type="price"  />
        
+        </div>
+      
  
         <div></div>
         <v-btn @click="handleFilters" class=" regular-font mt-2 mr-5 ml-5 btn-filter mb-4 white--text"   height="50" variant='text' color="#FD562E" > اعمال </v-btn>
@@ -83,7 +86,7 @@ Vue.use(VTooltip)
     },
     methods: {
       ...mapActions("price", ["convertLirToToman"]),
-      ...mapActions('home', ['fetchBrands', 'fetchProductsByGroupId','setSearchInput','setFilter']),
+      ...mapActions('home', ['fetchBrands', 'fetchProductsByGroupId','setSearchFilter','setFilter','setFilterType']),
       ...mapActions('bookmark', ['addBookmark', 'deleteBookmark',]),
      
       handleFilters(){
@@ -91,11 +94,11 @@ Vue.use(VTooltip)
 
      this.getFilter.from = 0 ;
          
-    
+     this.setFilterType('filter');
    
      this.setFilter(this.getFilter);
 
-     this.setSearchInput();
+     this.setSearchFilter();
       },
   
     
@@ -152,11 +155,16 @@ console.log("getProducts3",uniqueAuthors)
   <style lang="scss" scoped>
 
 .box-filter{
-  background-color: #fff;
+background-color: #fff;
   height: 100vh;
-   overflow-y: scroll;
-   position: relative;
+  position: relative;
 
+
+
+}
+.filter-sections{
+  height: 80vh;
+   overflow-y: scroll;
 }
   .filter-header-box {
     background-color: #FFE5C6;
@@ -184,9 +192,10 @@ console.log("getProducts3",uniqueAuthors)
     font-size: 15px;
   }
   .btn-filter{
-    position: fixed;
-    bottom: 0px;
-    right: 60px;
+    position: absolute;
+    bottom: 40px;
+    right: 5%;
+    width: 80%;
 
   }
   </style>
