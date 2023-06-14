@@ -68,6 +68,7 @@
     </div>
 
     <div class="header-section">
+      
       <v-menu     >
       <template v-slot:activator="{ on, attrs }">
        
@@ -78,6 +79,7 @@
           v-on:keyup.enter="showMoreSearchedProducts"
           v-on:keydown="onSearchInput"
           append-icon="mdi-magnify"
+          @click:clear="clearSearch"
           class="regular-font mt-7 rounded "
           label="جستجو"
           placeholder="نام محصول مورد نظر را وارد کنید"
@@ -92,9 +94,10 @@
           v-bind="attrs"
           v-on="on"
         ></v-text-field>
+        
       </template>
      
-     
+
       <v-card    width="100%" v-if="!isSearching && search && search.length>2">
        
 
@@ -195,8 +198,9 @@
           <p class="bold-font">برند ای یافت نشد</p>
         </div>
       </v-card>
+   
       <v-progress-linear
-          v-if="isSearching "
+          v-if="isSearching && search.length>2 "
           indeterminate
           class="mt-3"
         ></v-progress-linear>
@@ -338,7 +342,8 @@ export default {
       "clearSearchedProducts",
       "fetchProductsByBrandId",
       "setSearching",
-      "setSearchQuery"
+      "setSearchQuery",
+      "setFilterType"
     ]),
     
     ...mapActions("auth", ["logout"]),
@@ -370,7 +375,7 @@ export default {
       this.$store.commit("profile/updateSelectedMenuItem", index);
     },
     showMoreSearchedProducts(){
-      
+      this.setFilterType('keyword');
       this.setSearchQuery(this.search);
       this.$router.push({
         path: '/products',
@@ -381,17 +386,19 @@ export default {
     },
 
     onSearchInput(value) {
-      clearTimeout(this.debounce);
 
 
-      this.search.length<=2 ? this.setSearching(false) :
-      this.setSearching(true);
 
-      console.log(this.isSearching)
-      console.log(this.search)
-      console.log(value.target.value)
+
+      
+
+
+      console.log(this.debounce)
     
+
+      if(this.search.length>=2  && !this.debounce)
       this.debounce = setTimeout(() => {
+        
         this.setSearching(true);
 
         const searchItem = {
@@ -402,7 +409,8 @@ export default {
     
         this.search.length>2 && (
         this.setSearchInputBox(searchItem));
-
+        clearTimeout(this.debounce);
+        this.debounce = null;
       }, 1000);
     },
 
@@ -429,13 +437,14 @@ export default {
       this.fetchProductsByBrandId(brand.id);
     },
     handleEnter(){
-      this.$router.replace({
-        name: "products",
-        query: {
-          search: this.search,
-        },
-      });
+   
+      this.setFilterType()
       this.$router.push({ path: '/products', query: { search: this.search } })
+    },
+    clearSearch(){
+      this.search = "";
+      this.setSearching(false);
+      this.debounce = null;
     }
   },
   computed: {

@@ -276,41 +276,20 @@ const actions = {
   setSearchInput({ commit, getters }, data) {
     commit('updateLoadingProducts', true);
 
-    // const searchInput = getters.getFilter.name;
-    // const from  = getters.getFilter.from;
-    // const count =  getters.getFilter.count;
-    // const groupIds = getters.getFilter.groupIds? getters.getFilter.groupIds:[];
-    // const brands = getters.getFilter.brands?getters.getFilter.brands:[];
-    // const variants = getters.getFilter.variants?getters.getFilter.variants:[];
-    // const priceMin = getters.getFilter.priceMin?getters.getFilter.priceMin:0;
-    // const priceMax = getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0;
-  
+ 
+
+    const from = data.from;
     
-    // console.log("dddd0",getters.isLoadingProducts)
-    // console.log("dddd0",getters.getFilter.groupIds)
-    // const data = {
-    //   name: searchInput,
-    //   from,
-    //  count,
-    //  groupIds,brands,variants,priceMin,
+    if(from==0)
+     commit('clearProducts', []);
 
-    // }
-    // if(from==0)
-    // commit('clearProducts', []);
-    
-    // if(priceMax!==0)
-    // data.priceMax = priceMax;
+    const {getFilterType,getInitialFilter,getBrandId,getGroupId,searchQuery} = getters;
 
-    
-
-
-    const {getFilterType,getInitialFilter} = getters;
-
-  let url  = "/Search/ByKeyword/"+data.name;
+  let url  = "/Search/ByKeyword/"+searchQuery;
     if(getFilterType==="brand")
-    url  = "/Search/ByBrand/"+data.brand;
+    url  = "/Search/ByBrand/"+getBrandId;
     else if(getFilterType==="group")
-    url  = "/Search/ByGroup/"+data.group;
+    url  = "/Search/ByGroup/"+getGroupId;
    
     console.log("aaa3",getFilterType)
     axios
@@ -418,10 +397,11 @@ const actions = {
     console.log("tttt")
     console.log("aaa4")
     axios
-      .post(`/Store/SearchProducts`, data)
+      .get(`/Search/ByKeyword/`+searchInput)
+      //.post(`/Store/SearchProducts`, data)
       .then((response) => {
-        console.log(searchInput, response.data);
-        commit('UPDATE_SEARCHED_PRODUCTS', response.data.data);
+        console.log("searchInput", response.data);
+        commit('UPDATE_SEARCHED_PRODUCTS', response.data.data.products);
        
       })
       .catch((error) => {

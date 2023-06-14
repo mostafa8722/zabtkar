@@ -128,7 +128,7 @@ import { mapActions, mapGetters } from "vuex";
       ...mapActions("price", ["convertLirToToman"]),
       ...mapActions('bookmark', ['addBookmark', 'deleteBookmark']),
 
-      ...mapActions('home', ['setSearchInput','setFilter']),
+      ...mapActions('home', ['setFilter']),
 
 
       handleClick() {
@@ -163,6 +163,8 @@ import { mapActions, mapGetters } from "vuex";
       this.getFilter.brands = brands;
       this.getFilter.variants = variants;
 
+
+
       this.setFilter(this.getFilter);
      
       
@@ -182,9 +184,9 @@ import { mapActions, mapGetters } from "vuex";
        const index = brands.findIndex((brand)=>brand==item.id);
        
      return   index<=-1  ? false : true ;
-     }else  if(this.type==="size"  ){
+     }else  if(this.type==="variant"  ){
        
-       const index = variants.findIndex((variant)=>variant==item.id);
+       const index = variants.findIndex((variant)=>variant==item);
        
      return   index<=-1  ? false : true ;
      }

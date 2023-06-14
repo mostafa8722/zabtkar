@@ -36,10 +36,11 @@ export default {
   },
 
   methods: {
-    ...mapActions('home', ['fetchBrands', 'fetchProductsByBrandId','setFilterType']),
+    ...mapActions('home', ['fetchBrands', 'fetchProductsByBrandId','setFilterType','setBrandId']),
     onBrandItemSelect(brand) {
     
       this.setFilterType('brand');
+      this.setBrandId(brand.id);
       this.$router.push({ path: '/products', query: { brands : [brand.id] } })
     //  this.fetchProductsByBrandId(brand.id)
     },

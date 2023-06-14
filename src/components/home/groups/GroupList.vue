@@ -21,13 +21,14 @@ export default {
     GroupItem,
   },
   methods: {
-    ...mapActions('home', ['fetchGroups', 'fetchProductsByGroupId','setFilterType','setSearchInput']),
+    ...mapActions('home', ['fetchGroups', 'fetchProductsByGroupId','setFilterType','setSearchInput','setGroupId']),
     ...mapMutations('home', ['updateProducts']),
     onGroupItemSelect(item) {
      
       this.setFilterType('group');
+      this.setGroupId(item.id);
    
-  
+      
       
 
     
