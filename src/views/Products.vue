@@ -164,6 +164,7 @@ export default {
      'setGroupId',
      'setSearchQuery',
      'setBrandId',
+     'setSearchFilter',
      'setSearchInput','setFilter','clearSearchedProducts']),
     handleBackButton() {
       if (!this.$route.query.brand || this.$route.query.group) {
