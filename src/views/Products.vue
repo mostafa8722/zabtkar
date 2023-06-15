@@ -267,7 +267,7 @@ export default {
 
 
       if(this.$route.query.groupIds){
-        this.setFilterType('group');
+      this.setFilterType('group');
       this.setGroupId(this.$route.query.groupIds);
       this.initFilter.groupIds = [this.$route.query.groupIds];
       }

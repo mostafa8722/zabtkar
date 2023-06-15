@@ -372,7 +372,31 @@ export default {
     },
 
     onProfileMenuItemSelect(index) {
+      let query = {};
+      console.log("ttt",index)
       this.$store.commit("profile/updateSelectedMenuItem", index);
+
+      if(index===2){
+        query = {
+          myaddress : "insert"
+        };
+      }else  if(index===3){
+        query = {
+          myorders : "insert"
+        };
+      }else  if(index===4){
+        query = {
+          rules : "insert"
+        };
+      }else  if(index===5){
+        query = {
+          contact : "insert"
+        };
+      }
+           this.$router.replace({
+        name: "Main",
+        query 
+      });
     },
     showMoreSearchedProducts(){
       this.setFilterType('keyword');
@@ -382,6 +406,7 @@ export default {
         query: {
           search: this.search
         }
+        
       })
     },
 

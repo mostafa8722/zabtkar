@@ -162,7 +162,7 @@ return {
   },
   mounted() {
   
-    if (this.$route.query.tbrand) {
+    if (this.$route.query.brand) {
       this.fetchProductsByBrandId(this.$route.query.brand)
     }
 
@@ -175,6 +175,16 @@ return {
       this.setSelectedBottomNavigationItem(1)
     }else {
       this.setSelectedBottomNavigationItem(4)
+    }
+
+    if(this.$route.query.myaddress){
+      this.$store.commit("profile/updateSelectedMenuItem", 2);
+    }else if(this.$route.query.myorders){
+      this.$store.commit("profile/updateSelectedMenuItem", 3);
+    }else if(this.$route.query.rules){
+      this.$store.commit("profile/updateSelectedMenuItem", 4);
+    }else if(this.$route.query.contact){
+      this.$store.commit("profile/updateSelectedMenuItem", 5);
     }
   },
   created() {
