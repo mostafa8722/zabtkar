@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import VueRouter,{createWebHashHistory} from 'vue-router'
 import store from '@/store'
 import Main from '../views/Main'
 import Product from '../views/Product'
@@ -46,9 +46,11 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
+
   routes
 })
+
 
 router.beforeEach((to, from, next) => {
   const authenticated = store.getters['auth/authenticated']
