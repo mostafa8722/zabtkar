@@ -211,9 +211,7 @@ import { mapActions, mapGetters } from "vuex";
         if(!isNaN(new_val) && parseInt(new_val)){
           this.getFilter.priceMin = parseInt(new_val);
         }
-        console.log("Ttt", parseInt(new_val))
-        console.log("Ttt", this.getFilter)
-
+    
         this.setFilter(this.getFilter);
 
       },

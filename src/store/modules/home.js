@@ -93,7 +93,7 @@ const mutations = {
   },
 
   UPDATE_SEARCHING(state, payload) {
-   // console.log("payload",payload);
+
     state.searching = payload;
   },
 
@@ -231,7 +231,7 @@ const actions = {
     commit('updateShowProducts', true);
     commit('updateProducts', []);
 
-    console.log("aaa")
+ 
     axios
     
       .post(`/Store/SearchProducts`, {
@@ -242,7 +242,7 @@ const actions = {
       })
       .then((response) => {
 
-        console.log("tttt0",response.data.data)
+    
         commit('updateProducts', response.data.data);
       })
       .catch(() => {
@@ -257,7 +257,7 @@ const actions = {
     commit('updateLoading', true);
     commit('updateShowProducts', true);
     commit('updateProducts', []);
-    console.log("aaa2")
+ 
     axios
       .post(`/Store/SearchProducts`, {
         name: name,
@@ -326,7 +326,7 @@ const actions = {
       .post(url,data)
       .then( (response) => {
    
-        console.log("dddd0response",response.data.data)
+  
         let metaData =   response.data.data;
        
        // commit('updateProducts', data.products);
@@ -342,9 +342,8 @@ const actions = {
         dispatch("setSearchFilter",getFilter);
       })
       .catch((error) => {
-        console.log("dddd0error",error.message)
-        commit('clearProducts', []);
-        commit('clearProducts', []);
+    
+      
       })
       .finally(() => {
         commit('UPDATE_SEARCHING', false);
@@ -367,9 +366,7 @@ const actions = {
     const priceMax = getFilterType==="filter"?getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0:init_data.priceMax;
   
     
-    console.log("dddd0",getters.isLoadingProducts)
-    console.log("dddd0",getters.getFilter.groupIds)
-    console.log("dddd0",getters.getFilter.brands)
+
     const data = {
       name: searchInput,
       from,
@@ -386,18 +383,17 @@ const actions = {
     if(from===0)
     commit('clearProducts', []);
 
-    console.log("aaa3",data)
+
     axios
       .post(`/Search/Products`, data)
       .then((response) => {
    
-        console.log("dddd0response",response.data.data)
+
         commit('updateProducts', response.data.data);
       })
       .catch((error) => {
-        console.log("dddd0error",error.message)
-        commit('clearProducts', []);
-        commit('clearProducts', []);
+    
+     
       })
       .finally(() => {
         commit('UPDATE_SEARCHING', false);
@@ -431,20 +427,17 @@ const actions = {
 
    
 
-
-    console.log("tttt")
-    console.log("aaa4")
     axios
     .post(`/Search/Products`, data)
       //.post(`/Store/SearchProducts`, data)
       .then((response) => {
-        console.log("searchInput", response.data);
+      
   
         commit('UPDATE_SEARCHED_PRODUCTS', response.data.data);
        
       })
       .catch((error) => {
-        console.log(error);
+      
         commit('UPDATE_SEARCHED_PRODUCTS', []);
         commit('UPDATE_SEARCHING', false);
       })
@@ -469,7 +462,7 @@ const actions = {
   },
 
   setSearching({ commit }, isSearching) {
-    console.log("ttt4",isSearching)
+
     commit('UPDATE_SEARCHING', isSearching);
    
   },
@@ -503,7 +496,7 @@ const getters = {
     return state.brands.slice(start, end);
   },
   getProducts(state) {
-    console.log("tttt",state.products)
+   
     return state.products
   },
   showProducts(state) {

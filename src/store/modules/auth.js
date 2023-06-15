@@ -49,7 +49,7 @@ const actions = {
       commit('UPDATE_LOADING', true)
       axios.post('/User/Register', payload)
         .then((response) => {
-          console.log(response)
+     
           const data = response.data;
           if (data.success) {
             commit('UPDATE_TOKEN', data.data)
@@ -108,11 +108,11 @@ const actions = {
     commit('UPDATE_LOADING', true)
     axios.post('/User/Profile/Update', payload, config)
     .then((response) => {
-      console.log(response);
+
       dispatch('fetchProfile')
     })
     .catch((error) => {
-      console.log(error);
+  
     })
     .finally(() => {
       commit('UPDATE_LOADING', false)

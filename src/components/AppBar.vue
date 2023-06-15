@@ -372,7 +372,31 @@ export default {
     },
 
     onProfileMenuItemSelect(index) {
+      let query = {};
+      console.log("ttt",index)
       this.$store.commit("profile/updateSelectedMenuItem", index);
+
+      if(index===2){
+        query = {
+          myaddress : "insert"
+        };
+      }else  if(index===3){
+        query = {
+          myorders : "insert"
+        };
+      }else  if(index===4){
+        query = {
+          rules : "insert"
+        };
+      }else  if(index===5){
+        query = {
+          contact : "insert"
+        };
+      }
+           this.$router.replace({
+        name: "Main",
+        query 
+      });
     },
     showMoreSearchedProducts(){
       this.setFilterType('keyword');
@@ -382,6 +406,7 @@ export default {
         query: {
           search: this.search
         }
+        
       })
     },
 
@@ -393,7 +418,7 @@ export default {
       
 
 
-      console.log(this.debounce)
+
     
 
       if(this.search.length>=2  && !this.debounce)
@@ -483,19 +508,7 @@ export default {
   watch:{
     search(new_val,old_val){
      
-      // console.log("ttt00",this.search)
-
-      //  if(new_val.length<=2){
-       
-      //   this.setSearching(false) ;
-      //   this.clearSearchedProducts();
-      // } 
-      // (this.onSearchInput(new_val) ,  this.setSearching(true) );
-      // if(new_val.length<=2){
-       
-      //   this.setSearching(false) ;
-      //   this.clearSearchedProducts();
-      // } 
+  
       
     }
   }

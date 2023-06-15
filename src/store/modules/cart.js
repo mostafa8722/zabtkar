@@ -117,7 +117,7 @@ const mutations = {
 const actions = {
   addToCart({commit, getters}, payload) {
 
-    console.log("paylodaa",payload)
+
    
     let item = getters.getCartItem(payload.product.id, payload.variant.id) && payload.variant.exists ;
     if (!item ) {

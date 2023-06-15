@@ -49,7 +49,7 @@ export default {
 
 
      
-      this.$router.push({ path: '/products', query: { groupIds : [item.id] } })
+      this.$router.push({ path: '/products', query: { groupIds : item.id } })
    
     }
   },

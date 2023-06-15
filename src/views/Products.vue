@@ -185,13 +185,10 @@ export default {
    async onScroll() {
    
         if(!this.isLoadingProducts && this.getProducts.length>0 && this.getProducts.length%15===0){
-          console.log("ddd","loading2")
+   
       let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;
       if (bottomOfWindow) {
-        console.log("ddd","loading3",this.getProducts.length)
-        // if(this.getProducts.length<=15)
-        //   this.from = 0 ;
-
+    
         this.getFilter.from += this.getFilter.count ;
          
     
@@ -270,7 +267,7 @@ export default {
 
 
       if(this.$route.query.groupIds){
-        this.setFilterType('group');
+      this.setFilterType('group');
       this.setGroupId(this.$route.query.groupIds);
       this.initFilter.groupIds = [this.$route.query.groupIds];
       }
@@ -340,8 +337,7 @@ export default {
     }
   },
   getFilter(new_val,old_val){
-   
-console.log("dddddd",new_val.groupIds)
+ 
  },
  getGroupId(new_val,old_val){
  
