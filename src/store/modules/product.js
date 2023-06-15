@@ -72,7 +72,7 @@ const actions = {
             attributeName : variant.name,
             originalPrice : variant.originalPrice,
             sellingPrice : variant.sellingPrice,
-            exists :true,
+            exists : variant.exists,
 
           }
         })
