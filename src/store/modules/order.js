@@ -37,11 +37,11 @@ const actions = {
       commit('UPDATE_LOADING', true)
       axios.post('/Basket/Items', data, config)
         .then(response => {
-          console.log('basket items', response.data)
+       
           commit('UPDATE_ITEMS', response.data.data)
           resolve(response.data.success)
         }).catch(error => {
-          console.log(error)
+
           reject(error)
         }).finally(() => {
           commit('UPDATE_LOADING', false)
@@ -88,10 +88,10 @@ const actions = {
       commit('UPDATE_LOADING', true)
       axios.post('/Basket/Create', data, config)
         .then(response => {
-          console.log(response);
+         
           resolve(response.data.success)
         }).catch(error => {
-          console.log(error);
+  
           reject(error)
         }).finally(() => {
           commit('UPDATE_LOADING', false)

@@ -52,19 +52,9 @@ export default {
     priceMax : 0,
   });
       this.$router.push({ path: '/products', query: { brands : brand.id } })
-    //  this.fetchProductsByBrandId(brand.id)
+    
     },
-    onScroll() {
-      // let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;
-      // if (bottomOfWindow) {
-      //   if (this.end) return;
-      //   this.current++
-      //   if (this.indexEnd >= this.getBrandsCount) {
-      //     console.log('end')
-      //     this.end = true;
-      //   }
-      // }
-    }
+
   },
 
   computed: {
@@ -83,15 +73,11 @@ export default {
     }
   },
 
-  created() {
-    //window.addEventListener('scroll', this.onScroll);
-  },
+
   beforeMount() {
     this.fetchBrands({from:0,count:4})
   },
-  destroyed() {
-   // window.removeEventListener('scroll', this.onScroll);
-  },
+ 
 };
 </script>
 

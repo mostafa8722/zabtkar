@@ -393,7 +393,7 @@ export default {
       
 
 
-      console.log(this.debounce)
+
     
 
       if(this.search.length>=2  && !this.debounce)
@@ -483,19 +483,7 @@ export default {
   watch:{
     search(new_val,old_val){
      
-      // console.log("ttt00",this.search)
-
-      //  if(new_val.length<=2){
-       
-      //   this.setSearching(false) ;
-      //   this.clearSearchedProducts();
-      // } 
-      // (this.onSearchInput(new_val) ,  this.setSearching(true) );
-      // if(new_val.length<=2){
-       
-      //   this.setSearching(false) ;
-      //   this.clearSearchedProducts();
-      // } 
+  
       
     }
   }

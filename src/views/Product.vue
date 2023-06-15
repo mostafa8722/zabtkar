@@ -356,13 +356,7 @@ export default {
         return;
       }
 
-      // if (!this.color) {
-      //   this.snackbar = true;
-      //   this.snackbarMessage = 'رنگ را انتخاب کنید'
-      //   this.snackbarTimeout = 3000;
-      //   this.snackbarButton = false;
-      //   return
-      // }
+   
       this.addToCart({
         product: this.getProduct,
         variant: this.variant,
@@ -429,7 +423,7 @@ export default {
           url: window.location.href,
         });
       } catch (error) {
-        console.log("error sharing url", error);
+        
       }
     },
   },
@@ -473,7 +467,7 @@ export default {
       //const variants = this.updatedVariants.length? this.updatedVariants:this.getProduct ? this.getProduct.variants : [];
       const variants =  this.updatedVariants;
      
-      console.log("Ttt",variants)
+  
       return variants.map((variant) => {
         return {
           ...variant,

@@ -114,7 +114,7 @@ Vue.use(VTooltip)
   
       getVariants() {
 
-        console.log("getProducts",this.getProducts)
+  
 
       //const variants = this.updatedVariants.length? this.updatedVariants:this.getProduct ? this.getProduct.variants : [];
      
@@ -136,7 +136,7 @@ Vue.use(VTooltip)
     },
     watch:{
       getProducts(new_val,old_val){
-        console.log("getProducts2",new_val)
+   
         let sizes = [];
         new_val.map(item=>  { sizes.push (...item.variants)});
      
@@ -147,7 +147,7 @@ Vue.use(VTooltip)
   return !duplicate;
 });
 
-console.log("getProducts3",uniqueAuthors)
+
       this.variants = uniqueAuthors;
 
       }
@@ -167,7 +167,7 @@ background-color: #fff;
 }
 .filter-sections{
   height: 70vh;
-   overflow-y: scroll;
+   overflow-y: auto;
 }
   .filter-header-box {
     background-color: #FFE5C6;

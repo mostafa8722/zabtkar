@@ -52,7 +52,7 @@ const actions = {
   },
   refreshVariants({ commit ,getters}, id) {
     
-    //console.log("ccc",commit)
+
     commit('updateLoadingSize', true);
     //commit('updateloading', true);
     
