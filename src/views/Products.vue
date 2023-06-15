@@ -121,7 +121,7 @@
       <v-img src="@/assets/instagram.png" class="br-50" width="35px" height="35px"></v-img>
     </a>
    </div>
-   <div v-if="isLoadingProducts && getProducts.length>0 &&  getProducts.length%15==0" class="mt-3 d-flex flex-row   ">
+   <div v-if="isLoadingProducts && getProducts.length>0 &&  getProducts.length%15==0" class="mt-3 mb-2 d-flex flex-row   ">
       <v-progress-circular
         indeterminate
         color="primary"
