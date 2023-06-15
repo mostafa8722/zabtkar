@@ -411,7 +411,7 @@ export default {
         this.setSearchInputBox(searchItem));
         clearTimeout(this.debounce);
         this.debounce = null;
-      }, 1000);
+      }, 300);
     },
 
     onProductSelect(product) {

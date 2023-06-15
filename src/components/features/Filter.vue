@@ -149,9 +149,9 @@ import { mapActions, mapGetters } from "vuex";
       const variants = this.getFilter.variants;
       if(this.type==="group"  ){
        
-        const index = groupIds.findIndex((group)=>group==event);
+        const index = groupIds.findIndex((group)=>group==item.id);
         
-        index<=-1 && event ? groupIds.push(item.id) : groupIds.splice(index,0) ;
+        index<=-1 && event ? groupIds.push(item.id) : groupIds.splice(index,1) ;
       }else  if(this.type==="brand"  ){
        const index = brands.findIndex((brand)=>brand==item.id);
        index<=-1 && event ? brands.push(item.id) : brands.splice(index,1) ;

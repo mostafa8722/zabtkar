@@ -201,7 +201,7 @@ export default {
     if(this.getFilterType==="filter")
     this.setSearchFilter();
     else 
-     this.setSearchInput(data);
+     this.setSearchFilter(this.initFilter);
     
      
       }
@@ -215,7 +215,8 @@ export default {
     ...mapGetters('home', ['isLoading','isLoadingProducts', 
     'showProducts', 'brandsLoading',"searchQuery","getFilter",
     "getProducts",
-    'getFilterType'
+    'getFilterType',
+    'getGroupId'
   ]),
     
   },
@@ -227,6 +228,16 @@ export default {
         from : 0,
         count : 15,
         timeOutScroll : null,
+        initFilter:{
+          name :"",
+    from:0,
+    count:15,
+    groupIds:[],
+    brands : [],
+    variants : [],
+    priceMin:0,
+    priceMax : 0,
+        }
        
      
       }
@@ -260,17 +271,20 @@ export default {
       if(this.$route.query.groupIds){
         this.setFilterType('group');
       this.setGroupId(this.$route.query.groupIds);
+      this.initFilter.groupIds = [this.$route.query.groupIds];
       }
 
 
       if(this.$route.query.search){
         this.setFilterType('keyword');
         this.setSearchQuery(this.$route.query.search);
+        this.initFilter.name = this.$route.query.search;
       }
       name  = this.$route.query.search; 
 
       if(this.$route.query.brands){
         this.setFilterType('brand');
+        this.initFilter.brands = [this.$route.query.brands];
       this.setBrandId(this.$route.query.brands);
       }
     
@@ -310,12 +324,37 @@ export default {
    
       let data ={name:new_val};
       this.setSearchInput(data);
+
+      this.initFilter= {
+          name :new_val,
+    from:0,
+    count:15,
+    groupIds:[],
+    brands : [],
+    variants : [],
+    priceMin:0,
+    priceMax : 0,
+        }
+
     }
   },
   getFilter(new_val,old_val){
    
 console.log("dddddd",new_val.groupIds)
- }
+ },
+ getGroupId(new_val,old_val){
+ 
+  this.initFilter= {
+          name :"",
+    from:0,
+    count:15,
+    groupIds:[parseInt(new_val)],
+    brands : [],
+    variants : [],
+    priceMin:0,
+    priceMax : 0,
+        }
+}
 }
 </script>
 
