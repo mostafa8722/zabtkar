@@ -65,7 +65,7 @@ const actions = {
         
       
      
-        let variants = data .map((variant)=>{
+        let variants = data .filter(item =>item.exists===true).map((variant)=>{
           return {
             id : variant.id,
             attributeValue : variant.value,

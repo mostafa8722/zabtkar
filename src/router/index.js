@@ -52,6 +52,12 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const authenticated = store.getters['auth/authenticated']
+
+  if (to.fullPath.substr(0,2) === "/#") {
+    const path = to.fullPath.substr(2);
+    next(path);
+    return;
+}
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!authenticated) {
       router.push({

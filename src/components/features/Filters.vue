@@ -26,8 +26,11 @@
       
  
         <div></div>
-        <v-btn @click="handleFilters" class=" regular-font mt-2 mr-5 ml-5 btn-filter mb-4 white--text"   height="50" variant='text' color="#FD562E" > اعمال </v-btn>
+        <div class="d-flex justify-center">
+          <v-btn @click="handleFilters" class=" regular-font mt-2 mr-5 ml-5 btn-filter mb-4 white--text"   height="50" variant='text' color="#FD562E" > اعمال </v-btn>
     
+        </div>
+       
     
       </v-card>
   </template>
@@ -192,9 +195,9 @@ background-color: #fff;
     font-size: 15px;
   }
   .btn-filter{
-    position: absolute;
-    bottom: 40px;
-    right: 5%;
+
+ 
+   
     width: 80%;
 
   }

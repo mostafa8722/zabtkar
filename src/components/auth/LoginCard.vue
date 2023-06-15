@@ -31,9 +31,9 @@
         color="primary"
         class="bold-font mt-3"
         type="submit"
-        :disabled="!formIsValid || loading"
+       
         block
-        :loading="loading"
+       
       >
         ورود
       </v-btn>
