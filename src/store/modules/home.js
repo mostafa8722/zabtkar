@@ -273,39 +273,73 @@ const actions = {
       });
   },
 
-  setSearchInput({ commit, getters }, data) {
+  setSearchInput({ commit, getters ,dispatch}, data2) {
     commit('updateLoadingProducts', true);
 
- 
 
-    const from = data.from;
+
+    const from = 0;
+    let searchInput = "";
+
+    const count =  getters.getFilter.count;
+    const groupIds = [];
+    const brands = [];
+    const variants = [];
+    const priceMin = 0;
+    const priceMax = 0;
+   
     
-    if(from==0)
+
      commit('clearProducts', []);
 
-    const {getFilterType,getInitialFilter,getBrandId,getGroupId,searchQuery} = getters;
+    const {getFilterType,getFilter,getInitialFilter,getBrandId,getGroupId,searchQuery} = getters;
 
-  let url  = "/Search/ByKeyword/"+searchQuery;
-    if(getFilterType==="brand")
-    url  = "/Search/ByBrand/"+getBrandId;
-    else if(getFilterType==="group")
-    url  = "/Search/ByGroup/"+getGroupId;
+  let url  = "/Search/FilterData";
+
+    if(getFilterType==="brand"){
+      getFilter.brands = [];
+      getFilter.brands.push(+(getBrandId));
+      brands .push(+(getBrandId));
+    }
+ 
+    else if(getFilterType==="group"){
+      getFilter.groupIds = [];
+      getFilter.groupIds.push(getGroupId);
+
+      groupIds.push(getGroupId);
+    }
    
-    console.log("aaa3",getFilterType)
+    else{
+   searchInput = searchQuery;
+   getFilter.name = searchQuery;
+    }
+ 
+
+    const data = {
+      name: searchInput,
+      from,
+     count,
+     groupIds,brands,variants,priceMin,
+
+    }
     axios
-      .get(url)
-      .then((response) => {
+      .post(url,data)
+      .then( (response) => {
    
         console.log("dddd0response",response.data.data)
-        let data =   response.data.data;
-        let metaData = data.metaData;
-        commit('updateProducts', data.products);
+        let metaData =   response.data.data;
+       
+       // commit('updateProducts', data.products);
 
-        getInitialFilter.name = metaData?.name ? metaData?.name: getInitialFilter.name;
+       
        getInitialFilter.variants = metaData?.variants ? metaData?.variants:  getInitialFilter.variants;
         getInitialFilter.types = metaData?.types ? metaData?.types:  getInitialFilter.types;
         getInitialFilter.brands = metaData?.brands ? metaData?.brands:  getInitialFilter.brands;
         commit('setInitialFilter', getInitialFilter);
+   
+      commit('UpdateFilter', getFilter);
+   
+        dispatch("setSearchFilter",getFilter);
       })
       .catch((error) => {
         console.log("dddd0error",error.message)
@@ -314,25 +348,28 @@ const actions = {
       })
       .finally(() => {
         commit('UPDATE_SEARCHING', false);
-        commit('updateLoadingProducts', false);
+      //  commit('updateLoadingProducts', false);
       });
   },
 
-  setSearchFilter({ commit, getters }, search) {
+  setSearchFilter({ commit, getters }, init_data) {
     commit('updateLoadingProducts', true);
 
-    const searchInput = getters.getFilter.name;
+    const {getFilterType} = getters;
+
+    const searchInput =getFilterType==="filter"? getters.getFilter.name:init_data.name;
     const from  = getters.getFilter.from;
     const count =  getters.getFilter.count;
-    const groupIds = getters.getFilter.groupIds? getters.getFilter.groupIds:[];
-    const brands = getters.getFilter.brands?getters.getFilter.brands:[];
-    const variants = getters.getFilter.variants?getters.getFilter.variants:[];
-    const priceMin = getters.getFilter.priceMin?getters.getFilter.priceMin:0;
-    const priceMax = getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0;
+    const groupIds =getFilterType==="filter"? getters.getFilter.groupIds? getters.getFilter.groupIds:[]:init_data.groupIds;
+    const brands = getFilterType==="filter"?getters.getFilter.brands?getters.getFilter.brands:[]:init_data.brands;
+    const variants = getFilterType==="filter"?getters.getFilter.variants?getters.getFilter.variants:[]:init_data.variants;
+    const priceMin = getFilterType==="filter"?getters.getFilter.priceMin?getters.getFilter.priceMin:0:init_data.priceMin;
+    const priceMax = getFilterType==="filter"?getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0:init_data.priceMax;
   
     
     console.log("dddd0",getters.isLoadingProducts)
     console.log("dddd0",getters.getFilter.groupIds)
+    console.log("dddd0",getters.getFilter.brands)
     const data = {
       name: searchInput,
       from,
@@ -340,17 +377,18 @@ const actions = {
      groupIds,brands,variants,priceMin,
 
     }
-    if(from==0)
-    commit('clearProducts', []);
+    
     
     if(priceMax!==0)
     data.priceMax = priceMax;
 
     
+    if(from===0)
+    commit('clearProducts', []);
 
     console.log("aaa3",data)
     axios
-      .post(`/Store/SearchProducts`, data)
+      .post(`/Search/Products`, data)
       .then((response) => {
    
         console.log("dddd0response",response.data.data)
@@ -397,16 +435,18 @@ const actions = {
     console.log("tttt")
     console.log("aaa4")
     axios
-      .get(`/Search/ByKeyword/`+searchInput)
+    .post(`/Search/Products`, data)
       //.post(`/Store/SearchProducts`, data)
       .then((response) => {
         console.log("searchInput", response.data);
-        commit('UPDATE_SEARCHED_PRODUCTS', response.data.data.products);
+  
+        commit('UPDATE_SEARCHED_PRODUCTS', response.data.data);
        
       })
       .catch((error) => {
         console.log(error);
         commit('UPDATE_SEARCHED_PRODUCTS', []);
+        commit('UPDATE_SEARCHING', false);
       })
       .finally(() => {
         commit('UPDATE_SEARCHING', false);
@@ -429,7 +469,7 @@ const actions = {
   },
 
   setSearching({ commit }, isSearching) {
-    console.log("ttt",isSearching)
+    console.log("ttt4",isSearching)
     commit('UPDATE_SEARCHING', isSearching);
    
   },

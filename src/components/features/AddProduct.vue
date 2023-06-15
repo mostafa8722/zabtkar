@@ -265,8 +265,6 @@ padding: 5px;
   .font-15{
     font-size: 15px;
   }
-  .add-product{
-   
-  }
+
  
   </style>

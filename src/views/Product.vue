@@ -5,7 +5,7 @@
     </div>
 
     <div v-if="!productLoading" class="product__close d-block d-sm-none">
-      <v-btn icon @click="$router.replace({ name: 'Main' })" outlined>
+      <v-btn icon @click="back" outlined>
         <v-icon color="black">mdi-close</v-icon>
       </v-btn>
     </div>
@@ -16,7 +16,7 @@
       style="background-color: var(--accent-color); height: 100vh"
     >
       <div class="d-flex flew-row justify-end pa-6">
-        <v-btn icon @click="$router.replace({ name: 'Main' })" outlined>
+        <v-btn icon @click="back" outlined>
           <v-icon color="black">mdi-close</v-icon>
         </v-btn>
       </div>
@@ -371,6 +371,11 @@ export default {
       this.snackbarMessage = "محصول به سبد خرید اضافه شد";
       this.snackbarTimeout = 15000;
       this.snackbarButton = true;
+    },
+    back(){
+      //
+      this.$router.go(-1);
+     // $router.replace({ name: 'Main' })
     },
     decrementHandler() {
       let count = this.getProductCountInCart;
