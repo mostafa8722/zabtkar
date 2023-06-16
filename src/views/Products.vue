@@ -382,7 +382,7 @@ console.log("ttt0",new_val)
 .contact-us__icon {
   position: fixed;
   left: 5px;
-  bottom: 50px;
+  bottom: 60px;
   padding: 0;
   align-items: center;
 }

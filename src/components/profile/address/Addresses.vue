@@ -7,7 +7,9 @@
         color="primary"
       ></v-progress-linear>
     </div>
-    <AddressList />
+    <div style="margin-top:60px ;">
+      <AddressList />
+    </div>
     <div class="d-flex flex-row justify-end fab-btn">
       <v-btn color="primary" fab class="ma-3" @click.stop="dialog = true" :disabled="isLoading" :loading="isLoading">
         <v-icon>mdi-plus</v-icon>
