@@ -92,10 +92,10 @@ export default {
   },
   methods: {
     getImageURL(image) {
-      return `http://zabtkar.tooska-co.ir${image.image}`
+      return `https://zabtkar.tooska-co.ir${image.image}`
     },
     getThumbnailURL(image) {
-      return `http://zabtkar.tooska-co.ir${image.thumbnail}`
+      return `https://zabtkar.tooska-co.ir${image.thumbnail}`
     }
   },
   computed: {

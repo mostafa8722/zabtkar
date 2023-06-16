@@ -25,7 +25,7 @@
           <p v-if="!isSearching" class="bold-font mx-6 my-3">محصولات</p>
           <v-list-item :disabled="isSearching" style="cursor: pointer" v-for="(product, index) in getSearchedProductsSliced(3)" :key="index" @click="onProductSelect(product)">
             <v-list-item-avatar size="40">
-              <v-img :src="`http://zabtkar.tooska-co.ir${product.images[0].image}`"></v-img>
+              <v-img :src="`https://zabtkar.tooska-co.ir${product.images[0].image}`"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="opensans-bold">
@@ -48,7 +48,7 @@
           <p class="bold-font mx-6 my-3">برند ها</p>
           <v-list-item :disabled="isSearching" style="cursor: pointer" v-for="(brand, index) in getSearchedBrands" :key="index" @click="onBrandSelect(brand)">
             <v-list-item-avatar size="40" v-if="brand.logo && brand.logo !== '/uploads/logo/'">
-              <v-img :src="`http://zabtkar.tooska-co.ir${brand.logo}`" style="max-width: 100px;"></v-img>
+              <v-img :src="`https://zabtkar.tooska-co.ir${brand.logo}`" style="max-width: 100px;"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="opensans-bold">

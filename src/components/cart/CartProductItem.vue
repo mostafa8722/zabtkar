@@ -162,13 +162,13 @@ export default {
     ...mapGetters('price', ['getMultiplier']),
     getImage() {
       if (this.item && this.item.product.images.length) {
-        return `http://zabtkar.tooska-co.ir/${this.item.product.images[0].image}`
+        return `https://zabtkar.tooska-co.ir/${this.item.product.images[0].image}`
       }
     },
 
     getThumbnailImage() {
       if (this.item && this.item.product.images.length) {
-        return `http://zabtkar.tooska-co.ir/${this.item.product.images[0].thumbnail}`
+        return `https://zabtkar.tooska-co.ir/${this.item.product.images[0].thumbnail}`
       }
     },
 

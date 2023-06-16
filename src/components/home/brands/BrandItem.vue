@@ -13,7 +13,7 @@
       :color="brand.color || 'white'"
       @click="onItemSelect"
     >
-      <v-img v-if="brand.logo && brand.logo !== '/uploads/logo/'" :src="`http://zabtkar.tooska-co.ir${brand.logo}`" style="max-width: 100px;"></v-img>
+      <v-img v-if="brand.logo && brand.logo !== '/uploads/logo/'" :src="`https://zabtkar.tooska-co.ir${brand.logo}`" style="max-width: 100px;"></v-img>
       <div v-else class="my-8 d-flex flex-column align-center justify-center">
         <p class="my-auto text-center text-body-2 text-md-body-1" style="max-width: 100px;">
           <span class="brand-item__title opensans-bold">{{ brand.name }}</span>

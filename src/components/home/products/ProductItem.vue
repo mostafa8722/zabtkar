@@ -8,7 +8,7 @@
     >
     <v-card class="mx-auto d-flex flex-column fill-height" @click="onProductItemClick">
       <div>
-        <v-img :src="`http://zabtkar.tooska-co.ir/${this.product.images[0].thumbnail}`" height="300">
+        <v-img :src="`https://zabtkar.tooska-co.ir/${this.product.images[0].thumbnail}`" height="300">
           <div class="pa-2">
             <v-btn :color="getBookmarkIconColor" icon outlined @click.stop="onBookmarkClick">
               <v-icon>mdi-heart</v-icon>

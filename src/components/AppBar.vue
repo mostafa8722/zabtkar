@@ -112,7 +112,7 @@
           >
             <v-list-item-avatar size="40">
               <v-img
-                :src="`http://zabtkar.tooska-co.ir${product.images[0].image}`"
+                :src="`https://zabtkar.tooska-co.ir${product.images[0].image}`"
               ></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
@@ -165,7 +165,7 @@
               v-if="brand.logo && brand.logo !== '/uploads/logo/'"
             >
               <v-img
-                :src="`http://zabtkar.tooska-co.ir${brand.logo}`"
+                :src="`https://zabtkar.tooska-co.ir${brand.logo}`"
                 style="max-width: 100px"
               ></v-img>
             </v-list-item-avatar>

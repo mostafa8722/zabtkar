@@ -2,7 +2,7 @@
   <v-card class="mb-3 px-3 pt-3">
     <v-list-item>
       <v-list-item-avatar width="120" height="120" rounded>
-        <v-img :src="`http://zabtkar.tooska-co.ir${item.images[0].image}`" :lazy-src="`http://zabtkar.tooska-co.ir${item.images[0].thumbnail}`"></v-img>
+        <v-img :src="`https://zabtkar.tooska-co.ir${item.images[0].image}`" :lazy-src="`https://zabtkar.tooska-co.ir${item.images[0].thumbnail}`"></v-img>
       </v-list-item-avatar>
       <v-list-item-title>
         <p class="bold-font" >{{ getStatus }}</p>
