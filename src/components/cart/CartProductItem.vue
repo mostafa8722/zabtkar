@@ -37,7 +37,7 @@
     <div class="d-flex flex-row flex-nowrap align-center justify-space-around mt-sm-3">
       <CartProductSizePicker  :item="item" :variant="item.variant" @update:variant="onVariantUpdate"/>
 
-      <Price :price="parseInt(item.price)"/>
+      <Price :price="parseFloat(item.price)"/>
       <v-chip outlined>
         <div class="d-flex flex-row">
           <v-btn icon @click="rightButtonHandler()">

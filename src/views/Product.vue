@@ -96,10 +96,10 @@
                 </template>
               </v-select>
 
-              <div class="d-flex flex-row justify-space-between">
-                <Price :price="getPrice" />
+              <div v-show="!productLoading" class="d-flex flex-row justify-space-between">
+                <Price :price="productLoading?0:getPrice" />
                 <div>
-                  <v-btn
+                  <v-btn 
 
                     v-if="getProductCountInCart == 0 && getVariants.length>0"
                     @click="onAddToCartClick"

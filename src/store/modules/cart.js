@@ -243,7 +243,7 @@ const getters = {
     let count = 0;
      state.items.map( item =>{
       if(item.external)
-      count +=  item.count*parseInt(item.price);
+      count +=  item.count*parseIFloat(item.price);
       else
       count +=  item.variant.sellingPrice * item.count
     
