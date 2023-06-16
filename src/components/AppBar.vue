@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar  elevation="2" height="60">
+  <v-app-bar v-if="!($route.query.cart || $route.query.favorite || $route.query.profile) || $vuetify.breakpoint.width > 600 " elevation="2" height="60">
     <div   class="d-flex flex-row align-center">
       <v-tooltip  v-if="$vuetify.breakpoint.width > 600"  bottom color="secondary">
         <template v-slot:activator="{ on, attrs }">
@@ -67,7 +67,7 @@
       </v-tooltip>
     </div>
 
-    <div class="header-section">
+    <div v-if="!($route.query.cart || $route.query.favorite || $route.query.profile) " class="header-section">
       
       <v-menu     >
       <template v-slot:activator="{ on, attrs }">

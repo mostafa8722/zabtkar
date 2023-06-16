@@ -115,7 +115,7 @@ export default {
     return {
       refreshSnackbar: false,
       snackbar: false,
-      snackbarMessage: '',
+      snackbarMessage: 'خطای سمت سرور رخ داده لطفا دوباره یا بعد اامتحان کنید ',
       panel: 0,
       address: null,
       showAddressPanel: false,
@@ -159,6 +159,7 @@ export default {
           this.clearCart()
         }).catch(() => {
           this.snackbar = true;
+          this.snackbarMessage = " خطا در  ثبت اطلاعات لطفا دوباره تلاش کنید و یا با پشتیبانی تماس بگیرید"
         })
       } else {
         this.panel = panel;

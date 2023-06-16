@@ -159,15 +159,16 @@ Vue.use(VTooltip)
 
 .box-filter{
 background-color: #fff;
-  height: 90vh;
+  height: 85vh;
   position: relative;
 
 
 
 }
 .filter-sections{
-  height: 70vh;
+  height: 60vh;
    overflow-y: auto;
+ 
 }
   .filter-header-box {
     background-color: #FFE5C6;
