@@ -191,7 +191,10 @@ export default {
     
         this.getFilter.from += this.getFilter.count ;
          
-    
+     
+  console.log("fff1",this.initFilter)
+  console.log("fff2",this.getFilterType)
+  
    
     this.setFilter(this.getFilter);
     let data = {from: this.getFilter.from};
@@ -334,13 +337,9 @@ export default {
     priceMax : 0,
         }
 
-    }
-  },
-  getFilter(new_val,old_val){
- 
- },
- getGroupId(new_val,old_val){
- 
+    },
+    getGroupId(new_val,old_val){
+console.log("ttt0",new_val)
   this.initFilter= {
           name :"",
     from:0,
@@ -352,6 +351,9 @@ export default {
     priceMax : 0,
         }
 }
+  },
+ 
+ 
 }
 </script>
 
