@@ -332,9 +332,15 @@ const actions = {
        // commit('updateProducts', data.products);
 
        
-       getInitialFilter.variants = metaData?.variants ? metaData?.variants:  getInitialFilter.variants;
-        getInitialFilter.types = metaData?.types ? metaData?.types:  getInitialFilter.types;
-        getInitialFilter.brands = metaData?.brands ? metaData?.brands:  getInitialFilter.brands;
+       let types =[];
+       
+       metaData?.types.map(type1=> {type1.items.map(type2=>
+        {type2.items.map(item=>{
+          types.push(item)
+        })})});
+       getInitialFilter.variants = metaData?.variants ? metaData?.variants:  [];
+        getInitialFilter.types = types;
+        getInitialFilter.brands = metaData?.brands ? metaData?.brands: [];
         commit('setInitialFilter', getInitialFilter);
    
       commit('UpdateFilter', getFilter);
@@ -363,7 +369,7 @@ const actions = {
     const brands = getFilterType==="filter"?getters.getFilter.brands?getters.getFilter.brands:[]:init_data.brands;
     const variants = getFilterType==="filter"?getters.getFilter.variants?getters.getFilter.variants:[]:init_data.variants;
     const priceMin = getFilterType==="filter"?getters.getFilter.priceMin?getters.getFilter.priceMin:0:init_data.priceMin;
-    const priceMax = getFilterType==="filter"?getters.getFilter.priceMax?parseInt(getters.getFilter.priceMax):0:init_data.priceMax;
+    const priceMax = getFilterType==="filter"?getters.getFilter.priceMax?parseFloat(getters.getFilter.priceMax):0:init_data.priceMax;
   
     
 

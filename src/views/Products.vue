@@ -157,7 +157,7 @@ export default {
     BottomNavigation
 },
   methods: {
-    ...mapMutations('home', ['updateShowProducts']),
+    ...mapMutations('home', ['updateShowProducts','updateShowProducts']),
     ...mapActions('home',
      ['fetchProductsByBrandId', 'fetchProductsByGroupId',
      'setFilterType',
@@ -185,15 +185,13 @@ export default {
    async onScroll() {
    
         if(!this.isLoadingProducts && this.getProducts.length>0 && this.getProducts.length%15===0){
-   
+          this.updateShowProducts(true)
       let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight * 0.9;
       if (bottomOfWindow) {
     
         this.getFilter.from += this.getFilter.count ;
          
-     
-  console.log("fff1",this.initFilter)
-  console.log("fff2",this.getFilterType)
+
   
    
     this.setFilter(this.getFilter);
@@ -344,7 +342,7 @@ console.log("ttt0",new_val)
           name :"",
     from:0,
     count:15,
-    groupIds:[parseInt(new_val)],
+    groupIds:[parseFloat(new_val)],
     brands : [],
     variants : [],
     priceMin:0,

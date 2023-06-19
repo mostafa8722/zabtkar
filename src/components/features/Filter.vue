@@ -208,8 +208,8 @@ import { mapActions, mapGetters } from "vuex";
     watch:{
       minPrice(new_val,old_val){
 
-        if(!isNaN(new_val) && parseInt(new_val)){
-          this.getFilter.priceMin = parseInt(new_val);
+        if(!isNaN(new_val) && parseFloat(new_val)){
+          this.getFilter.priceMin = parseFloat(new_val);
         }
     
         this.setFilter(this.getFilter);
@@ -217,8 +217,8 @@ import { mapActions, mapGetters } from "vuex";
       },
       maxPrice(new_val,old_val){
 
-        if(!isNaN(new_val) && parseInt(new_val)){
-          this.getFilter.priceMax = parseInt(new_val);
+        if(!isNaN(new_val) && parseFloat(new_val)){
+          this.getFilter.priceMax = parseFloat(new_val);
         }
 
         this.setFilter(this.getFilter);

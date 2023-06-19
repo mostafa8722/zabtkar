@@ -161,12 +161,13 @@ Vue.use(VTooltip)
 background-color: #fff;
   height: 85vh;
   position: relative;
+  margin-bottom: 5vh;
 
 
 
 }
 .filter-sections{
-  height: 60vh;
+  height: 65vh;
    overflow-y: auto;
  
 }
